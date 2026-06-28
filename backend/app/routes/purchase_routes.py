@@ -47,3 +47,52 @@ def complete_item(
         )
 
     )
+
+@purchase_bp.route(
+    "/items",
+    methods=["GET"]
+)
+def get_items():
+
+    return (
+        PurchaseService
+        .get_pending()
+    )
+
+
+@purchase_bp.route(
+    "/items/history",
+    methods=["GET"]
+)
+def history():
+
+    return (
+        PurchaseService
+        .get_history()
+    )
+
+@purchase_bp.route(
+    "/items/<int:item_id>/trash",
+    methods=["PATCH"]
+)
+def move_to_trash(
+    item_id
+):
+
+    return (
+        PurchaseService
+        .move_to_trash(
+            item_id
+        )
+    )
+
+@purchase_bp.route(
+"/items/trash",
+methods=["GET"]
+)
+def trash():
+
+    return (
+        PurchaseService
+        .get_trash()
+    )

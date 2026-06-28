@@ -135,3 +135,151 @@ class PurchaseService:
             "message":
             "Pedido realizado"
         }
+
+
+    @staticmethod
+    def get_pending():
+
+        items = (
+            PurchaseRepository
+            .get_pending()
+        )
+
+        result = []
+
+        for item in items:
+
+            result.append({
+
+                "id":
+                item.id,
+
+                "produto":
+                item.produto,
+
+                "quantidade":
+                item.quantidade,
+
+                "status_id":
+                item.status_id,
+
+                "categoria_id":
+                item.categoria_id,
+
+                "prioridade_id":
+                item.prioridade_id
+
+            })
+
+
+        return result
+    
+    @staticmethod
+    def get_history():
+
+        items = (
+            PurchaseRepository
+            .get_history()
+        )
+
+        result = []
+
+        for item in items:
+
+            result.append({
+
+                "id":
+                item.id,
+
+                "produto":
+                item.produto,
+
+                "quantidade":
+                item.quantidade,
+
+                "status_id":
+                item.status_id,
+
+                "categoria_id":
+                item.categoria_id,
+
+                "prioridade_id":
+                item.prioridade_id
+
+            })
+
+
+        return result
+    
+
+
+    @staticmethod
+    def move_to_trash(item_id):
+
+        item = (
+            PurchaseRepository
+            .move_to_trash(
+                item_id
+            )
+        )
+
+        if not item:
+
+            return {
+
+                "ok": False,
+
+                "message":
+                "Item não encontrado"
+            }
+
+
+        return {
+
+            "ok": True,
+
+            "message":
+            "Item movido para lixeira"
+        }
+    
+
+    @staticmethod
+    def get_trash():
+
+        items = (
+            PurchaseRepository
+            .get_trash()
+        )
+
+        result = []
+
+
+        for item in items:
+
+            result.append({
+
+                "id":
+                item.id,
+
+                "produto":
+                item.produto,
+
+                "quantidade":
+                item.quantidade,
+
+                "status_id":
+                item.status_id,
+
+                "categoria_id":
+                item.categoria_id,
+
+                "prioridade_id":
+                item.prioridade_id,
+
+                "movido_lixeira":
+                item.movido_lixeira
+
+            })
+
+
+        return result

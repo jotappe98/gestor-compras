@@ -79,3 +79,66 @@ class PurchaseRepository:
         db.session.commit()
 
         return item
+    
+    @staticmethod
+    def get_pending():
+
+        return (
+            PurchaseItem.query
+            .filter(
+                PurchaseItem.status_id == 1,
+
+                PurchaseItem.movido_lixeira
+                == False
+            )
+            .all()
+        )
+    
+    @staticmethod
+    def get_history():
+
+        return (
+            PurchaseItem.query
+            .filter(
+                PurchaseItem.status_id == 2,
+
+                PurchaseItem.movido_lixeira
+                == False
+            )
+            .all()
+        )
+    
+
+    @staticmethod
+    def move_to_trash(item_id):
+
+        item = (
+            PurchaseItem.query
+            .get(item_id)
+        )
+
+        if not item:
+
+            return None
+
+
+        item.movido_lixeira = True
+
+
+        db.session.commit()
+
+
+        return item
+
+
+    @staticmethod
+    def get_trash():
+
+        return (
+            PurchaseItem.query
+            .filter(
+                PurchaseItem.movido_lixeira
+                == True
+            )
+            .all()
+        )

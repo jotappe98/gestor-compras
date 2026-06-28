@@ -1,5 +1,6 @@
 from app.extensions import db
 from sqlalchemy import func
+
 from app.models.purchase_item import (
     PurchaseItem,
 )
@@ -26,60 +27,56 @@ class PurchaseRepository:
             )
             .first()
         )
-    
 
     @staticmethod
-    def mark_as_ordered(item_id):
+    def get_by_id(
+        item_id
+    ):
 
-        item = (
-            PurchaseItem.query
-            .get(item_id)
+        return (
+            PurchaseItem
+            .query
+            .get(
+                item_id
+            )
         )
 
-        if not item:
-
-            return None
-
-
-        item.status_id = 2
-
-
-        db.session.commit()
-
-
-        return item
-    
     @staticmethod
-    def mark_as_ordered(item_id):
+    def mark_as_ordered(
+        item_id
+    ):
 
         item = (
             PurchaseItem
             .query
-            .get(item_id)
+            .get(
+                item_id
+            )
         )
 
         if not item:
 
             return None
 
-
         item.status_id = 2
 
-
         db.session.commit()
 
         return item
-
 
     @staticmethod
-    def create(item):
+    def create(
+        item
+    ):
 
-        db.session.add(item)
+        db.session.add(
+            item
+        )
 
         db.session.commit()
 
         return item
-    
+
     @staticmethod
     def get_pending():
 
@@ -93,7 +90,7 @@ class PurchaseRepository:
             )
             .all()
         )
-    
+
     @staticmethod
     def get_history():
 
@@ -107,29 +104,29 @@ class PurchaseRepository:
             )
             .all()
         )
-    
 
     @staticmethod
-    def move_to_trash(item_id):
+    def move_to_trash(
+        item_id
+    ):
 
         item = (
-            PurchaseItem.query
-            .get(item_id)
+            PurchaseItem
+            .query
+            .get(
+                item_id
+            )
         )
 
         if not item:
 
             return None
 
-
         item.movido_lixeira = True
-
 
         db.session.commit()
 
-
         return item
-
 
     @staticmethod
     def get_trash():
@@ -142,3 +139,27 @@ class PurchaseRepository:
             )
             .all()
         )
+
+    @staticmethod
+    def restore_item(
+        item_id
+    ):
+
+        item = (
+
+            PurchaseRepository
+            .get_by_id(
+                item_id
+            )
+
+        )
+
+        if not item:
+
+            return None
+
+        item.movido_lixeira = False
+
+        db.session.commit()
+
+        return item

@@ -96,3 +96,21 @@ def trash():
         PurchaseService
         .get_trash()
     )
+
+
+@purchase_bp.route(
+    "/items/<int:item_id>/restore",
+    methods=["PATCH"]
+)
+def restore_item(
+    item_id
+):
+
+    return (
+
+        PurchaseService
+        .restore_item(
+            item_id
+        )
+
+    )

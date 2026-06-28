@@ -283,3 +283,54 @@ class PurchaseService:
 
 
         return result
+    
+
+    @staticmethod
+    def restore_item(
+        item_id
+    ):
+
+        item = (
+
+            PurchaseRepository
+            .get_by_id(
+                item_id
+            )
+
+        )
+
+        if not item:
+
+            return {
+
+                "error":
+                "Item não encontrado"
+
+            }, 404
+
+
+        if not item.movido_lixeira:
+
+            return {
+
+                "error":
+                "Item não está na lixeira"
+
+            }, 400
+
+
+        (
+
+            PurchaseRepository
+            .restore_item(
+                item_id
+            )
+
+        )
+
+        return {
+
+            "message":
+            "Item restaurado com sucesso"
+
+        }, 200

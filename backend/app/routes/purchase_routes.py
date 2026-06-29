@@ -114,3 +114,24 @@ def restore_item(
         )
 
     )
+
+
+@purchase_bp.route(
+    "/items/search",
+    methods=["GET"]
+)
+def search_items():
+
+    query = request.args.get(
+        "q",
+        ""
+    )
+
+    return (
+
+        PurchaseService
+        .search_pending(
+            query
+        )
+
+    )

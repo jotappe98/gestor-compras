@@ -334,3 +334,49 @@ class PurchaseService:
             "Item restaurado com sucesso"
 
         }, 200
+    
+
+
+    @staticmethod
+    def search_pending(
+        query
+    ):
+
+        items = (
+
+            PurchaseRepository
+            .search_pending(
+                query
+            )
+
+        )
+
+        result = []
+
+
+        for item in items:
+
+            result.append({
+
+                "id":
+                item.id,
+
+                "produto":
+                item.produto,
+
+                "quantidade":
+                item.quantidade,
+
+                "status_id":
+                item.status_id,
+
+                "categoria_id":
+                item.categoria_id,
+
+                "prioridade_id":
+                item.prioridade_id
+
+            })
+
+
+        return result

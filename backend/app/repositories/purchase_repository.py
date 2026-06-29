@@ -1,6 +1,9 @@
 from app.extensions import db
 from sqlalchemy import func
-
+from sqlalchemy import (
+    func,
+    or_
+)
 from app.models.purchase_item import (
     PurchaseItem,
 )
@@ -163,3 +166,40 @@ class PurchaseRepository:
         db.session.commit()
 
         return item
+    
+
+    @staticmethod
+    def search_pending(
+        query
+    ):
+
+        query = query.strip()
+
+        return (
+
+            PurchaseItem
+            .query
+            .filter(
+
+                PurchaseItem.status_id == 1,
+
+                PurchaseItem.movido_lixeira == False,
+
+                or_(
+
+                    PurchaseItem.produto.ilike(
+                        f"%{query}%"
+                    ),
+
+                    PurchaseItem.referencia_produto.ilike(
+                        f"%{query}%"
+                    )
+
+                )
+
+            )
+            .all()
+
+        )
+        
+

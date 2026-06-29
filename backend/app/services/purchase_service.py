@@ -140,12 +140,33 @@ class PurchaseService:
     @staticmethod
     def get_pending():
 
-        items = (
-            PurchaseRepository
-            .get_pending()
+        from flask import request
+
+
+        categoria = request.args.get(
+            "categoria",
+            type=int
         )
 
+        prioridade = request.args.get(
+            "prioridade",
+            type=int
+        )
+
+
+        items = (
+
+            PurchaseRepository
+            .get_pending(
+                categoria,
+                prioridade
+            )
+
+        )
+
+
         result = []
+
 
         for item in items:
 

@@ -1,5 +1,4 @@
 from app.extensions import db
-from sqlalchemy import func
 from sqlalchemy import (
     func,
     or_
@@ -81,17 +80,69 @@ class PurchaseRepository:
         return item
 
     @staticmethod
-    def get_pending():
+    def get_pending(
+        categoria=None,
+        prioridade=None
+    ):
 
-        return (
-            PurchaseItem.query
+        query = (
+
+            PurchaseItem
+            .query
             .filter(
+
                 PurchaseItem.status_id == 1,
 
                 PurchaseItem.movido_lixeira
                 == False
+
+            )
+
+        )
+
+
+        if categoria:
+
+            query = (
+
+                query
+                .filter(
+
+                    PurchaseItem.categoria_id
+                    == categoria
+
+                )
+
+            )
+
+
+        if prioridade:
+
+            query = (
+
+                query
+                .filter(
+
+                    PurchaseItem.prioridade_id
+                    == prioridade
+
+                )
+
+            )
+
+
+        return (
+
+            query
+            .order_by(
+
+                PurchaseItem
+                .prioridade_id
+                .asc()
+
             )
             .all()
+
         )
 
     @staticmethod

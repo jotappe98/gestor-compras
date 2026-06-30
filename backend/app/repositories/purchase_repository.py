@@ -82,7 +82,9 @@ class PurchaseRepository:
     @staticmethod
     def get_pending(
         categoria=None,
-        prioridade=None
+        prioridade=None,
+        page=1,
+        limit=20
     ):
 
         query = (
@@ -93,8 +95,7 @@ class PurchaseRepository:
 
                 PurchaseItem.status_id == 1,
 
-                PurchaseItem.movido_lixeira
-                == False
+                PurchaseItem.movido_lixeira == False
 
             )
 
@@ -107,10 +108,8 @@ class PurchaseRepository:
 
                 query
                 .filter(
-
                     PurchaseItem.categoria_id
                     == categoria
-
                 )
 
             )
@@ -122,28 +121,52 @@ class PurchaseRepository:
 
                 query
                 .filter(
-
                     PurchaseItem.prioridade_id
                     == prioridade
-
                 )
 
             )
 
 
-        return (
+        query = (
 
             query
             .order_by(
-
-                PurchaseItem
-                .prioridade_id
-                .asc()
-
+                PurchaseItem.prioridade_id.asc()
             )
-            .all()
 
         )
+
+
+        pagination = (
+
+            query.paginate(
+                page=page,
+                per_page=limit,
+                error_out=False
+            )
+
+        )
+
+
+        return {
+
+            "items":
+            pagination.items,
+
+            "total":
+            pagination.total,
+
+            "page":
+            pagination.page,
+
+            "limit":
+            pagination.per_page,
+
+            "total_pages":
+            pagination.pages
+
+        }
 
     @staticmethod
     def get_history():

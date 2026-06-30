@@ -135,3 +135,21 @@ def search_items():
         )
 
     )
+
+
+@purchase_bp.route(
+    "/items/<int:item_id>",
+    methods=["GET"]
+)
+def get_item_details(
+    item_id
+):
+
+    return (
+
+        PurchaseService
+        .get_by_id(
+            item_id
+        )
+
+    )

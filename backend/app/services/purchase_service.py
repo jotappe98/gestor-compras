@@ -153,13 +153,27 @@ class PurchaseService:
             type=int
         )
 
+        page = request.args.get(
+            "page",
+            default=1,
+            type=int
+        )
 
-        items = (
+        limit = request.args.get(
+            "limit",
+            default=20,
+            type=int
+        )
+
+
+        data = (
 
             PurchaseRepository
             .get_pending(
                 categoria,
-                prioridade
+                prioridade,
+                page,
+                limit
             )
 
         )
@@ -168,7 +182,7 @@ class PurchaseService:
         result = []
 
 
-        for item in items:
+        for item in data["items"]:
 
             result.append({
 
@@ -193,7 +207,24 @@ class PurchaseService:
             })
 
 
-        return result
+        return {
+
+            "items":
+            result,
+
+            "page":
+            data["page"],
+
+            "limit":
+            data["limit"],
+
+            "total":
+            data["total"],
+
+            "total_pages":
+            data["total_pages"]
+
+        }
     
     @staticmethod
     def get_history():
@@ -401,3 +432,85 @@ class PurchaseService:
 
 
         return result
+    
+
+    @staticmethod
+    def get_by_id(
+        item_id
+    ):
+
+        item = (
+
+            PurchaseRepository
+            .get_by_id(
+                item_id
+            )
+
+        )
+
+        if not item:
+
+            return {
+
+                "error":
+                "Item não encontrado"
+
+            }, 404
+        
+
+        status_nome = (
+
+                "Pendente"
+
+                if item.status_id == 1
+
+                else
+
+                "Pedido realizado"
+
+            )
+
+        return {
+
+            "id":
+            item.id,
+
+            "produto":
+            item.produto,
+
+            "quantidade":
+            item.quantidade,
+
+            "referencia_produto":
+            item.referencia_produto,
+
+            "observacoes":
+            item.observacoes,
+
+            "categoria_id":
+            item.categoria_id,
+
+            "prioridade_id":
+            item.prioridade_id,
+
+            "status_id":
+            item.status_id,
+
+            "fornecedor_id":
+            item.fornecedor_id,
+
+            "solicitante_id":
+            item.solicitante_id,
+
+            "movido_lixeira":
+            item.movido_lixeira,
+
+            "created_at":
+            item.created_at,
+
+            "updated_at":
+            item.updated_at,
+
+            "status": status_nome
+
+        }

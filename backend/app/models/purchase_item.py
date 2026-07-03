@@ -85,3 +85,43 @@ class PurchaseItem(db.Model):
         server_default=db.func.now(),
         onupdate=db.func.now()
     )
+
+    categoria = db.relationship(
+    "Category"
+    )
+
+    prioridade = db.relationship(
+        "Priority"
+    )
+
+    status = db.relationship(
+        "StatusItem"
+    )
+
+    fornecedor = db.relationship(
+        "Supplier"
+    )
+
+    solicitante = db.relationship(
+        "Requester"
+    )
+
+    categoria = db.relationship(
+        "Category"
+    )
+
+    prioridade = db.relationship(
+        "Priority"
+    )
+
+    status = db.relationship(
+        "StatusItem"
+    )
+
+    fornecedor = db.relationship(
+        "Supplier"
+    )
+
+    solicitante = db.relationship(
+        "Requester"
+    )

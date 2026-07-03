@@ -1,0 +1,68 @@
+.pending-page {
+    min-height: 100vh;
+    background: #FFFFFF;
+}
+.content-area {
+    display: flex;
+    align-items: flex-start;
+}
+
+.main-content {
+    flex: 1;
+    padding: 18px;
+}
+
+.pending-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 18px;
+
+}
+
+.pending-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.pending-title {
+    margin: 0;
+    font-size: 34px;
+    color: #232321;
+    line-height: 1;
+}
+
+.pending-actions {
+    display: flex;
+    align-items: center;
+}
+
+.add-button {
+    width: 180px;
+    height: 42px;
+    border: none;
+    border-radius: 12px;
+    background: #6A6A6A;
+    color: white;
+    cursor: pointer;
+}
+
+.sort-row {
+    margin-top: 8px;
+}
+
+.sort-select {
+    height: 36px;
+    width: 170px;
+    border-radius: 10px;
+    border: 1px solid #323232;
+    background: #202020;
+    color: white;
+    padding: 0 10px;
+}
+
+.items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

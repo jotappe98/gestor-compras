@@ -1,3 +1,5 @@
+import "../../styles/ItemCard.css"
+
 function ItemCard({
 
     item
@@ -7,33 +9,76 @@ function ItemCard({
     return (
 
         <div
-            className="item-card"
+            className="item-row"
         >
 
-            <h3>
+            <div
+                className="item-number"
+            >
+
+                {
+                    item.id
+                }
+
+            </div>
+
+            <div
+                className="item-product"
+            >
 
                 {
                     item.produto
                 }
 
-            </h3>
+            </div>
 
-            <p>
-
-                Quantidade:
+            <div
+                className="item-quantity"
+            >
 
                 {
                     item.quantidade
                 }
 
-            </p>
+            </div>
+
+            <div
+                className="item-category"
+            >
+
+                {
+                    item.categoria_id
+                }
+
+            </div>
+
+            <div
+                className="item-priority"
+            >
+
+                {
+                    item.prioridade_id
+                }
+
+            </div>
+
+            <div
+                className="item-actions"
+            >
+
+                ☐
+
+                🗑
+
+                ✎
+
+            </div>
 
         </div>
 
     )
 
 }
-
 
 export default (
     ItemCard

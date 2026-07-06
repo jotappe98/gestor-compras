@@ -62,9 +62,9 @@ class PurchaseItem(db.Model):
     )
 
 
-    fornecedor_id = db.Column(
-        db.Integer,
-        db.ForeignKey("fornecedores.id")
+    fornecedor = db.Column(
+    db.String(120),
+    nullable=True
     )
 
 
@@ -98,30 +98,11 @@ class PurchaseItem(db.Model):
         "StatusItem"
     )
 
-    fornecedor = db.relationship(
-        "Supplier"
-    )
 
     solicitante = db.relationship(
         "Requester"
     )
 
-    categoria = db.relationship(
-        "Category"
-    )
+   
 
-    prioridade = db.relationship(
-        "Priority"
-    )
-
-    status = db.relationship(
-        "StatusItem"
-    )
-
-    fornecedor = db.relationship(
-        "Supplier"
-    )
-
-    solicitante = db.relationship(
-        "Requester"
-    )
+ 

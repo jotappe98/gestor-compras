@@ -85,10 +85,8 @@ class PurchaseService:
             observacoes=data.get(
                 "observacoes"
             ),
-
-            fornecedor_id=data.get(
-                "fornecedor_id"
-            ),
+        
+            fornecedor=data.get("fornecedor"),
 
             solicitante_id=data.get(
                 "solicitante_id"
@@ -201,7 +199,7 @@ class PurchaseService:
                 "prioridade": item.prioridade.nome,
 
                 "fornecedor": (
-                    item.fornecedor.nome
+                    item.fornecedor
                     if item.fornecedor
                     else "-"
                 ),
@@ -264,7 +262,7 @@ class PurchaseService:
                 "prioridade": item.prioridade.nome,
 
                 "fornecedor": (
-                    item.fornecedor.nome
+                    item.fornecedor
                     if item.fornecedor
                     else "-"
                 ),
@@ -281,270 +279,270 @@ class PurchaseService:
         return result
 
 
-        @staticmethod
-        def move_to_trash(item_id):
+    @staticmethod
+    def move_to_trash(item_id):
 
-            item = (
-                PurchaseRepository
-                .move_to_trash(
-                    item_id
-                )
+        item = (
+            PurchaseRepository
+            .move_to_trash(
+                item_id
             )
+        )
 
-            if not item:
-
-                return {
-
-                    "ok": False,
-
-                    "message":
-                    "Item não encontrado"
-                }
-
+        if not item:
 
             return {
 
-                "ok": True,
+                "ok": False,
 
                 "message":
-                "Item movido para lixeira"
+                "Item não encontrado"
             }
 
 
-        @staticmethod
-        def get_trash():
+        return {
 
-            items = (
-                PurchaseRepository
-                .get_trash()
-            )
+            "ok": True,
 
-            result = []
+            "message":
+            "Item movido para lixeira"
+        }
 
-            for item in items:
 
-                result.append({
+    @staticmethod
+    def get_trash():
 
-                    "id": item.id,
+        items = (
+            PurchaseRepository
+            .get_trash()
+        )
 
-                    "produto": item.produto,
+        result = []
 
-                    "quantidade": item.quantidade,
+        for item in items:
 
-                    "status": item.status.nome,
+            result.append({
 
-                    "categoria": item.categoria.nome,
+                "id": item.id,
 
-                    "prioridade_id": item.prioridade_id,
+                "produto": item.produto,
 
-                    "prioridade": item.prioridade.nome,
+                "quantidade": item.quantidade,
 
-                    "fornecedor": (
-                        item.fornecedor.nome
-                        if item.fornecedor
-                        else "-"
-                    ),
+                "status": item.status.nome,
 
-                    "solicitante": (
-                        item.solicitante.nome
-                        if item.solicitante
-                        else "-"
-                    ),
+                "categoria": item.categoria.nome,
 
-                    "movido_lixeira": item.movido_lixeira
+                "prioridade_id": item.prioridade_id,
 
-                })
+                "prioridade": item.prioridade.nome,
 
-            return result
-
-
-        @staticmethod
-        def restore_item(
-            item_id
-        ):
-
-            item = (
-
-                PurchaseRepository
-                .get_by_id(
-                    item_id
-                )
-
-            )
-
-            if not item:
-
-                return {
-
-                    "error":
-                    "Item não encontrado"
-
-                }, 404
-
-
-            if not item.movido_lixeira:
-
-                return {
-
-                    "error":
-                    "Item não está na lixeira"
-
-                }, 400
-
-
-            (
-
-                PurchaseRepository
-                .restore_item(
-                    item_id
-                )
-
-            )
-
-            return {
-
-                "message":
-                "Item restaurado com sucesso"
-
-            }, 200
-
-
-        @staticmethod
-        def search_pending(
-            query
-        ):
-
-            items = (
-
-                PurchaseRepository
-                .search_pending(
-                    query
-                )
-
-            )
-
-            result = []
-
-            for item in items:
-
-                result.append({
-
-                    "id": item.id,
-
-                    "produto": item.produto,
-
-                    "quantidade": item.quantidade,
-
-                    "status": item.status.nome,
-
-                    "categoria": item.categoria.nome,
-
-                    "prioridade_id": item.prioridade_id,
-
-                    "prioridade": item.prioridade.nome,
-
-                    "fornecedor": (
-                        item.fornecedor.nome
-                        if item.fornecedor
-                        else "-"
-                    ),
-
-                    "solicitante": (
-                        item.solicitante.nome
-                        if item.solicitante
-                        else "-"
-                    )
-
-                })
-
-            return result
-
-
-        @staticmethod
-        def get_by_id(
-            item_id
-        ):
-
-            item = (
-
-                PurchaseRepository
-                .get_by_id(
-                    item_id
-                )
-
-            )
-
-            if not item:
-
-                return {
-
-                    "error":
-                    "Item não encontrado"
-
-                }, 404
-
-            return {
-
-                "id":
-                item.id,
-
-                "produto":
-                item.produto,
-
-                "quantidade":
-                item.quantidade,
-
-                "referencia_produto":
-                item.referencia_produto,
-
-                "observacoes":
-                item.observacoes,
-
-                "categoria_id":
-                item.categoria_id,
-
-                "categoria":
-                item.categoria.nome,
-
-                "prioridade_id":
-                item.prioridade_id,
-
-                "prioridade":
-                item.prioridade.nome,
-
-                "status_id":
-                item.status_id,
-
-                "status":
-                item.status.nome,
-
-                "fornecedor_id":
-                item.fornecedor_id,
-
-                "fornecedor":
-                (
-                    item.fornecedor.nome
+                "fornecedor": (
+                    item.fornecedor
                     if item.fornecedor
                     else "-"
                 ),
 
-                "solicitante_id":
-                item.solicitante_id,
-
-                "solicitante":
-                (
+                "solicitante": (
                     item.solicitante.nome
                     if item.solicitante
                     else "-"
                 ),
 
-                "movido_lixeira":
-                item.movido_lixeira,
+                "movido_lixeira": item.movido_lixeira
 
-                "created_at":
-                item.created_at,
+            })
 
-                "updated_at":
-                item.updated_at
+        return result
 
-            }
+
+    @staticmethod
+    def restore_item(
+        item_id
+    ):
+
+        item = (
+
+            PurchaseRepository
+            .get_by_id(
+                item_id
+            )
+
+        )
+
+        if not item:
+
+            return {
+
+                "error":
+                "Item não encontrado"
+
+            }, 404
+
+
+        if not item.movido_lixeira:
+
+            return {
+
+                "error":
+                "Item não está na lixeira"
+
+            }, 400
+
+
+        (
+
+            PurchaseRepository
+            .restore_item(
+                item_id
+            )
+
+        )
+
+        return {
+
+            "message":
+            "Item restaurado com sucesso"
+
+        }, 200
+
+
+    @staticmethod
+    def search_pending(
+        query
+    ):
+
+        items = (
+
+            PurchaseRepository
+            .search_pending(
+                query
+            )
+
+        )
+
+        result = []
+
+        for item in items:
+
+            result.append({
+
+                "id": item.id,
+
+                "produto": item.produto,
+
+                "quantidade": item.quantidade,
+
+                "status": item.status.nome,
+
+                "categoria": item.categoria.nome,
+
+                "prioridade_id": item.prioridade_id,
+
+                "prioridade": item.prioridade.nome,
+
+                "fornecedor": (
+                    item.fornecedor
+                    if item.fornecedor
+                    else "-"
+                ),
+
+                "solicitante": (
+                    item.solicitante.nome
+                    if item.solicitante
+                    else "-"
+                )
+
+            })
+
+        return result
+
+
+    @staticmethod
+    def get_by_id(
+        item_id
+    ):
+
+        item = (
+
+            PurchaseRepository
+            .get_by_id(
+                item_id
+            )
+
+        )
+
+        if not item:
+
+            return {
+
+                "error":
+                "Item não encontrado"
+
+            }, 404
+
+        return {
+
+            "id":
+            item.id,
+
+            "produto":
+            item.produto,
+
+            "quantidade":
+            item.quantidade,
+
+            "referencia_produto":
+            item.referencia_produto,
+
+            "observacoes":
+            item.observacoes,
+
+            "categoria_id":
+            item.categoria_id,
+
+            "categoria":
+            item.categoria.nome,
+
+            "prioridade_id":
+            item.prioridade_id,
+
+            "prioridade":
+            item.prioridade.nome,
+
+            "status_id":
+            item.status_id,
+
+            "status":
+            item.status.nome,
+
+
+
+
+            "fornecedor":
+            (
+                item.fornecedor
+                if item.fornecedor
+                else "-"
+            ),
+
+            "solicitante_id":
+            item.solicitante_id,
+
+            "solicitante":
+            (
+                item.solicitante.nome
+                if item.solicitante
+                else "-"
+            ),
+
+            "movido_lixeira":
+            item.movido_lixeira,
+
+            "created_at":
+            item.created_at,
+
+            "updated_at":
+            item.updated_at
+
+        }

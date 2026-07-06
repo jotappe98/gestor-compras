@@ -12,6 +12,9 @@ from app.models.status_item import StatusItem
 from app.models.supplier import Supplier
 from app.models.requester import Requester
 from app.models.purchase_item import PurchaseItem
+from app.routes.requester_routes import (
+    requester_bp
+)
 
 
 def create_app():
@@ -26,6 +29,10 @@ def create_app():
 
     app.register_blueprint(
     purchase_bp
+    )
+
+    app.register_blueprint(
+        requester_bp
     )
 
     @app.route("/")

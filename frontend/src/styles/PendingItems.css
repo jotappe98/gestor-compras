@@ -9,7 +9,7 @@
 
 .main-content {
     flex: 1;
-    padding: 18px;
+    padding: 2px 18px 18px 8px;
 }
 
 .pending-header {
@@ -30,6 +30,7 @@
     font-size: 34px;
     color: #232321;
     line-height: 1;
+    text-align: left;
 }
 
 .pending-actions {
@@ -38,27 +39,44 @@
 }
 
 .add-button {
-    width: 180px;
+    width: 170px;
     height: 42px;
     border: none;
-    border-radius: 12px;
-    background: #6A6A6A;
+    border-radius: 5px;
+    background: #232321;
     color: white;
     cursor: pointer;
+    transition: .2s;
+    font-size:15px;
+    display:inline-flex;
+    gap:5px;
+    align-items:center;
+    justify-content:center;
+}
+
+.add-button:hover {
+    background: #343430;
+    padding-left: 15px;
 }
 
 .sort-row {
-    margin-top: 8px;
+    margin-top: 20px;
 }
+
 
 .sort-select {
     height: 36px;
-    width: 170px;
-    border-radius: 10px;
+    width: 150px;
+    border-radius: 5px;
     border: 1px solid #323232;
     background: #202020;
     color: white;
     padding: 0 10px;
+}
+
+.sort-select:hover{
+    cursor: pointer;
+    background: #343430;
 }
 
 .items-list {

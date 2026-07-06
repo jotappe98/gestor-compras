@@ -2,8 +2,10 @@ import { useEffect, useState } from "react"
 import { getItems } from "../../services/api"
 import Header from "../../components/Header/Header"
 import Sidebar from "../../components/Sidebar/Sidebar"
-import ItemCard from "../../components/ItemCard/ItemCard"
+import ItemsTable from "../../components/ItemsTable/ItemsTable"
 import "../../styles/PendingItems.css"
+import {FaPlusCircle} from "react-icons/fa"
+
 
 function PendingItems() {
 
@@ -111,7 +113,7 @@ function PendingItems() {
                               className="add-button"
                           >
 
-                              + Adicionar item
+                                <FaPlusCircle /> Adicionar item
 
                           </button>
 
@@ -119,29 +121,9 @@ function PendingItems() {
 
                   </div>
 
-                    <div
-                        className="items-list"
-                    >
-
-                        {
-                            items.map(
-                                item => (
-
-                                    <ItemCard
-                                        key={
-                                            item.id
-                                        }
-
-                                        item={
-                                            item
-                                        }
-                                    />
-
-                                )
-                            )
-                        }
-
-                    </div>
+                <ItemsTable
+                    items={items}
+                />  
 
                 </main>
 

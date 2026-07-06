@@ -3,7 +3,7 @@ import "../../styles/SideBar.css";
 import {
     FaHome,
     FaTrash,
-    FaSearch
+    FaHistory
 } from "react-icons/fa";
 
 function Sidebar() {
@@ -16,7 +16,7 @@ function Sidebar() {
             </button>
 
             <button>
-                <FaSearch />
+                <FaHistory />
                 <span>Histórico</span>
             </button>
 

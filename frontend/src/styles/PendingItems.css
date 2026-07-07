@@ -1,22 +1,26 @@
 .pending-page {
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     background: #FFFFFF;
 }
 .content-area {
     display: flex;
-    align-items: flex-start;
+    align-items: stretch;
+    flex: 1;
 }
 
 .main-content {
     flex: 1;
-    padding: 2px 18px 18px 8px;
+    display: flex;
+    flex-direction: column;
+    padding: 1px 18px 5px 8px;
 }
 
 .pending-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 18px;
 
 }
 
@@ -83,4 +87,15 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.content-top{
+    display:flex;
+    flex-direction:column;
+    flex:1;
+}
+
+.item-details{
+    min-height:220px;
+    margin-top:20px;
 }

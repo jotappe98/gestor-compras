@@ -7,26 +7,40 @@ import {
 } from "react-icons/fa";
 
 function Sidebar() {
+
     return (
+
         <aside className="sidebar">
 
-            <button>
-                <FaHome />
-                <span>Página Principal</span>
-            </button>
+            <div className="sidebar-top">
 
-            <button>
-                <FaHistory />
-                <span>Histórico</span>
-            </button>
+                <button>
+                    <FaHome />
+                    <span>Página Principal</span>
+                </button>
 
-            <button>
-                <FaTrash />
-                <span>Lixeira</span>
-            </button>
+                <button>
+                    <FaHistory />
+                    <span>Histórico</span>
+                </button>
+
+                <button>
+                    <FaTrash />
+                    <span>Lixeira</span>
+                </button>
+
+            </div>
+
+            <div className="sidebar-bottom">
+
+                {/* Área reservada para futuras Relações */}
+
+            </div>
 
         </aside>
+
     );
+
 }
 
 export default Sidebar;

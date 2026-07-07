@@ -1,11 +1,23 @@
 .sidebar {
     width: 220px;
+    min-height: 100%;
     background: #232321;
-    border-radius: 0 5px 5px 0px;
     padding: 16px;
     display: flex;
     flex-direction: column;
+}
+
+.sidebar-top {
+    display: flex;
+    flex-direction: column;
     gap: 8px;
+}
+
+.sidebar-bottom {
+    flex: 1;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #4a4a4a;
 }
 
 .sidebar button {
@@ -27,7 +39,6 @@
     background: #343430;
     padding-left: 22px;
 }
-
 
 .sidebar button svg {
     color: #FFFFFF;

@@ -1,12 +1,11 @@
 .search-container {
     flex: 1;
     position: relative;
-
 }
 
 .search-input {
-    width: 85%;
-    height: 46px;
+    width: 90%;
+    height: 42px;
     padding: 0 18px 0 48px;
     border: 1px solid #000;
     border-radius: 5px;
@@ -14,21 +13,19 @@
     outline: none;
     transition: .2s;
     background: white;
-    color:#232321;
-
+    color: #232321;
 }
+
 
 .search-input:focus {
     border-color: #232321;
-
 }
 
 .search-icon {
     position: absolute;
-    left: 45px;
+    left: 18px;
     top: 50%;
     transform: translateY(-50%);
     color: #000;
     font-size: 15px;
-
 }

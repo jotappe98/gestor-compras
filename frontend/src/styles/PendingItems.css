@@ -4,6 +4,7 @@
     flex-direction: column;
     background: #FFFFFF;
 }
+
 .content-area {
     display: flex;
     align-items: stretch;
@@ -14,14 +15,13 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 1px 18px 5px 8px;
+    padding: 8px 12px;
 }
 
 .pending-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-
+    align-items: flex-end;
 }
 
 .pending-left {
@@ -31,10 +31,9 @@
 
 .pending-title {
     margin: 0;
-    font-size: 34px;
+    font-size: 30px;
     color: #232321;
     line-height: 1;
-    text-align: left;
 }
 
 .pending-actions {
@@ -43,19 +42,19 @@
 }
 
 .add-button {
-    width: 170px;
-    height: 42px;
+    width: 165px;
+    height: 40px;
     border: none;
     border-radius: 5px;
     background: #232321;
     color: white;
     cursor: pointer;
     transition: .2s;
-    font-size:15px;
-    display:inline-flex;
-    gap:5px;
-    align-items:center;
-    justify-content:center;
+    font-size: 15px;
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
 }
 
 .add-button:hover {
@@ -64,9 +63,8 @@
 }
 
 .sort-row {
-    margin-top: 20px;
+    margin-top: 10px;
 }
-
 
 .sort-select {
     height: 36px;
@@ -78,24 +76,19 @@
     padding: 0 10px;
 }
 
-.sort-select:hover{
+.sort-select:hover {
     cursor: pointer;
     background: #343430;
+}
+
+.items-section {
+    margin-top: 8px;
+    flex: 1;
+    min-height: 0;
 }
 
 .items-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
-}
-
-.content-top{
-    display:flex;
-    flex-direction:column;
-    flex:1;
-}
-
-.item-details{
-    min-height:220px;
-    margin-top:20px;
 }

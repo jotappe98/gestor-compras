@@ -539,10 +539,16 @@ class PurchaseService:
             "movido_lixeira":
             item.movido_lixeira,
 
-            "created_at":
-            item.created_at,
+            "created_at": (
+                item.created_at.strftime("%d/%m/%Y %H:%M")
+                if item.created_at
+                else "-"
+            ),
 
-            "updated_at":
-            item.updated_at
+            "updated_at": (
+                item.updated_at.strftime("%d/%m/%Y %H:%M")
+                if item.updated_at
+                else "-"
+            )
 
         }

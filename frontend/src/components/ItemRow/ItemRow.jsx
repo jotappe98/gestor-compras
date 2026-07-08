@@ -1,24 +1,23 @@
-import { FaCheck } from "react-icons/fa"
-import { FiEdit2 } from "react-icons/fi"
-import { FiTrash2 } from "react-icons/fi"
+import { FaCheck } from "react-icons/fa";
+import { FiEdit2, FiTrash2 } from "react-icons/fi";
+
 import "../../styles/ItemRow.css";
 
-function ItemRow({ item,number }) {
-
+function ItemRow({ item, number }) {
 
     return (
 
-        <tr>
+        <div className="item-row">
 
-            <td className="column-number">
+            <div className="column-number">
                 {number}
-            </td>
+            </div>
 
-            <td className="column-product">
+            <div className="column-product">
                 {item.produto}
-            </td>
+            </div>
 
-            <td className="column-status">
+            <div className="column-status">
 
                 <span
                     className={`status-badge ${item.status?.toLowerCase().replace(" ", "-")}`}
@@ -26,54 +25,40 @@ function ItemRow({ item,number }) {
                     {item.status}
                 </span>
 
-            </td>
+            </div>
 
-            <td className="column-priority">
+            <div className="column-priority">
                 {item.prioridade}
-            </td>
+            </div>
 
-            <td className="column-supplier">
-                <span className={!item.fornecedor ? "empty-cell" : ""}>
-                    {item.fornecedor || "-"}
-                </span>
-            </td>
+            <div className="column-supplier">
+                {item.fornecedor || "-"}
+            </div>
 
-            <td className="column-requester">
-                <span className={!item.solicitante ? "empty-cell" : ""}>
-                    {item.solicitante || "-"}
-                </span>
-            </td>
+            <div className="column-requester">
+                {item.solicitante || "-"}
+            </div>
 
-            <td className="column-actions">
+            <div className="column-actions">
 
-                <div className="actions">
+                <button className="action-button complete-button">
+                    <FaCheck />
+                </button>
 
-                    <button
-                        className="action-button complete-button"
-                    >
-                        <FaCheck />
-                    </button>
+                <button className="action-button edit-button">
+                    <FiEdit2 />
+                </button>
 
-                    <button
-                        className="action-button edit-button"
-                    >
-                        <FiEdit2 />
-                    </button>
+                <button className="action-button trash-button">
+                    <FiTrash2 />
+                </button>
 
-                    <button
-                        className="action-button trash-button"
-                    >
-                        <FiTrash2 />
-                    </button>
+            </div>
 
-                </div>
+        </div>
 
-            </td>
-
-        </tr>
-
-    )
+    );
 
 }
 
-export default ItemRow
+export default ItemRow;

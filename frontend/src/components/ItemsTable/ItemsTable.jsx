@@ -1,60 +1,52 @@
-import "../../styles/ItemsTable.css"
-import ItemRow from "../ItemRow/ItemRow"
+import "../../styles/ItemsTable.css";
+import ItemRow from "../ItemRow/ItemRow";
 
 function ItemsTable({ items }) {
 
     return (
 
-        <table className="items-table">
+        <div className="items-table">
 
-            <thead>
+            <div className="items-header">
 
-                <tr >
+                <div>Nº</div>
 
-                    <th>Nº</th>
+                <div>Produto</div>
 
-                    <th>Produto</th>
+                <div>Status</div>
 
-                    <th>Status</th>
+                <div>Prioridade</div>
 
-                    <th>Prioridade</th>
+                <div>Fornecedor</div>
 
-                    <th>Fornecedor</th>
+                <div>Solicitante</div>
 
-                    <th>Solicitante</th>
+                <div>Ações</div>
 
-                    <th>Ações</th>
+            </div>
 
-                </tr>
+            <div className="items-body">
 
-            </thead>
+                {
 
-            <tbody>
+                    items.map((item, index) => (
 
-                    {
+                        <ItemRow
+                            key={item.id}
+                            item={item}
+                            number={index + 1}
+                        />
 
-                        items.map((item, index) => (
+                    ))
 
-                            <ItemRow
+                }
 
-                                key={item.id}
+            </div>
 
-                                item={item}
+        </div>
 
-                                number={index + 1}
-
-                            />
-
-                        ))
-
-                    }
-
-                </tbody>
-
-        </table>
-
-    )
+    );
 
 }
 
-export default ItemsTable
+export default ItemsTable;

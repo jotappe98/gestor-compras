@@ -3,6 +3,7 @@ import { getItems } from "../../services/api";
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import ItemsTable from "../../components/ItemsTable/ItemsTable";
+import ItemDetails from "../../components/ItemDetails/ItemDetails";
 import "../../styles/PendingItems.css";
 import { FaPlusCircle } from "react-icons/fa";
 
@@ -30,33 +31,49 @@ function PendingItems() {
                 <Sidebar />
 
                 <main className="main-content">
-                    <div className="content-top">
-                        <div className="pending-header">
-                            <div className="pending-left">
-                                <h1 className="pending-title">
-                                    Pedidos
-                                </h1>
 
-                                <div className="sort-row">
-                                    <select className="sort-select">
-                                        <option>Ordem crescente</option>
-                                        <option>Ordem decrescente</option>
-                                        <option>Quantidade</option>
-                                        <option>Mais recentes</option>
-                                    </select>
-                                </div>
+                    <div className="pending-header">
+
+                        <div className="pending-left">
+
+                            <h1 className="pending-title">
+                                Pedidos
+                            </h1>
+
+                            <div className="sort-row">
+
+                                <select className="sort-select">
+                                    <option>Ordem crescente</option>
+                                    <option>Ordem decrescente</option>
+                                    <option>Quantidade</option>
+                                    <option>Mais recentes</option>
+                                </select>
+
                             </div>
 
-                            <div className="pending-actions">
-                                <button className="add-button">
-                                    <FaPlusCircle /> Adicionar item
-                                </button>
-                            </div>
                         </div>
+
+                        <div className="pending-actions">
+
+                            <button className="add-button">
+                                <FaPlusCircle />
+                                Adicionar item
+                            </button>
+
+                        </div>
+
                     </div>
 
-                    <ItemsTable items={items} />
+                    <div className="items-section">
+
+                        <ItemsTable items={items} />
+
+                    </div>
+
+                    <ItemDetails />
+
                 </main>
+
             </div>
         </div>
     );

@@ -1,21 +1,22 @@
 .filter-button {
-    height: 47px;
-    width: 15%;
-    padding: 0 18px;
+    height: 42px;
+    min-width: 150px;
+    padding: 0 22px;
     border: 1px solid #000;
     border-radius: 5px;
     background: #232321;
     color: #fff;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 16px;
     transition: .2s;
+    flex-shrink: 0;
 }
 
 .filter-button:hover {
     background: #343430;
-    color: #fff;
-    padding-left: 22px;
+    padding-right: 15px;
 }

@@ -1,26 +1,12 @@
 .item-row{
-
+    width:100%;
     display:grid;
-
-    grid-template-columns:
-        70px
-        2fr
-        170px
-        140px
-        190px
-        190px
-        130px;
-
+    grid-template-columns: var(--table-columns);
     align-items:center;
-
-    min-height:64px;
-
+    min-height:50px;
     border-bottom:1px solid #E5E5E5;
-
     transition:.2s;
-
 }
-
 .item-row:hover{
 
     background:#F8F8F8;
@@ -31,7 +17,7 @@
 
 .item-row > div{
 
-    padding:0 14px;
+    padding:0;
 
 }
 
@@ -44,15 +30,15 @@
 }
 
 .column-product{
-
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    padding-left:12px;
+    font-size:14px;
     font-weight:500;
-
     color:#232321;
-
     white-space:nowrap;
-
     overflow:hidden;
-
     text-overflow:ellipsis;
 
 }
@@ -66,36 +52,39 @@
 }
 
 .column-priority{
-
     text-align:center;
-
     color:#5F5F5F;
-
+    font-size:14px;
 }
 
-.column-supplier,
-.column-requester{
-
+.column-supplier{
+    padding:0 6px;
     text-align:center;
-
     color:#5F5F5F;
-
+    font-size:14px;
     white-space:nowrap;
-
     overflow:hidden;
-
     text-overflow:ellipsis;
 
 }
 
+
+.column-requester{
+    padding:0 6px;
+    text-align:center;
+    color:#5F5F5F;
+    font-size:14px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+
 .column-actions{
-
     display:flex;
-
     justify-content:center;
-
-    gap:8px;
-
+    align-items:center;
+    gap:4px;
 }
 
 .status-badge{
@@ -106,13 +95,13 @@
 
     justify-content:center;
 
-    width:120px;
+    width:95px;
 
-    height:28px;
+    height:24px;
 
     border-radius:18px;
 
-    font-size:12px;
+    font-size:11px;
 
     font-weight:500;
 

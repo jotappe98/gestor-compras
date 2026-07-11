@@ -18,7 +18,7 @@
     flex-direction: column;
     min-width: 0;
     min-height: 0;
-    padding: 18px 24px;
+    padding: 14px 24px;
     overflow: hidden;
 }
 
@@ -26,6 +26,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    margin-bottom: 10px;
 }
 
 .pending-left {
@@ -35,7 +36,7 @@
 
 .pending-title {
     margin: 0;
-    font-size: 30px;
+    font-size: 28px;
     color: #232321;
     line-height: 1;
 }
@@ -67,7 +68,7 @@
 }
 
 .sort-row {
-    margin-top: 10px;
+    margin-top: 6px;
 }
 
 .sort-select {
@@ -88,7 +89,7 @@
 .items-section {
     flex: 1;
     min-height: 0;
-    margin-top: 16px;
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
     overflow: hidden;

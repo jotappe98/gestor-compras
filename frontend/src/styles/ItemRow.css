@@ -3,7 +3,7 @@
     display:grid;
     grid-template-columns: var(--table-columns);
     align-items:center;
-    min-height:50px;
+    min-height:44px;
     border-bottom:1px solid #E5E5E5;
     transition:.2s;
     transition: background-color .2s ease;
@@ -34,7 +34,7 @@
     align-items:center;
     justify-content:flex-start;
     padding-left:12px;
-    font-size:14px;
+    font-size:13px;
     font-weight:500;
     color:#232321;
     white-space:nowrap;
@@ -54,14 +54,14 @@
 .column-priority{
     text-align:center;
     color:#5F5F5F;
-    font-size:14px;
+    font-size:13px;
 }
 
 .column-supplier{
     padding:0 6px;
     text-align:center;
     color:#5F5F5F;
-    font-size:14px;
+    font-size:13px;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
@@ -73,7 +73,7 @@
     padding:0 6px;
     text-align:center;
     color:#5F5F5F;
-    font-size:14px;
+    font-size:13px;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
@@ -95,13 +95,13 @@
 
     justify-content:center;
 
-    width:95px;
+    width:88px;
 
-    height:24px;
+    height:20px;
 
     border-radius:18px;
 
-    font-size:11px;
+    font-size:10px;
 
     font-weight:500;
 
@@ -127,4 +127,5 @@
 
 .item-row.selected{
     background:#EEF4FF;
+    border-left:4px solid #2D6CDF;
 }

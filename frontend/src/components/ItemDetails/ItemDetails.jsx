@@ -1,6 +1,31 @@
 import "../../styles/ItemsDetails.css";
 
-function ItemDetails() {
+
+function ItemDetails({item}) {
+
+    if (!item) {
+
+        return (
+
+            <section className="item-details">
+
+                <h2 className="details-title">
+                    Detalhes do Item
+                </h2>
+
+                <div className="details-empty">
+
+                    <p>
+                        Selecione um item da tabela para visualizar suas informações.
+                    </p>
+
+                </div>
+
+            </section>
+
+        );
+
+    }
 
     return (
 
@@ -18,7 +43,7 @@ function ItemDetails() {
                     </span>
 
                     <span className="detail-value">
-                        -
+                        {item ? item.produto : "-"}
                     </span>
                 </div>
 
@@ -28,7 +53,7 @@ function ItemDetails() {
                     </span>
 
                     <span className="detail-value">
-                        -
+                        {item ? item.quantidade : "-"}
                     </span>
                 </div>
 
@@ -38,7 +63,7 @@ function ItemDetails() {
                     </span>
 
                     <span className="detail-value">
-                        -
+                        {item?.categoria || "-"}
                     </span>
                 </div>
 
@@ -48,7 +73,7 @@ function ItemDetails() {
                     </span>
 
                     <span className="detail-value">
-                        -
+                        {item?.prioridade || "-"}
                     </span>
                 </div>
 
@@ -58,7 +83,7 @@ function ItemDetails() {
                     </span>
 
                     <span className="detail-value">
-                        -
+                        {item?.status || "-"}
                     </span>
                 </div>
 
@@ -68,7 +93,7 @@ function ItemDetails() {
                     </span>
 
                     <span className="detail-value">
-                        -
+                        {item?.fornecedor || "-"}
                     </span>
                 </div>
 
@@ -78,7 +103,7 @@ function ItemDetails() {
                     </span>
 
                     <span className="detail-value">
-                        -
+                        {item?.solicitante || "-"}
                     </span>
                 </div>
 
@@ -88,7 +113,7 @@ function ItemDetails() {
                     </span>
 
                     <span className="detail-value">
-                        -
+                        {item?.referencia_produto || "-"}
                     </span>
                 </div>
 
@@ -98,7 +123,7 @@ function ItemDetails() {
                     </span>
 
                     <span className="detail-value">
-                        -
+                        {item?.created_at || "-"}
                     </span>
                 </div>
 
@@ -108,7 +133,7 @@ function ItemDetails() {
                     </span>
 
                     <span className="detail-value">
-                        -
+                        {item?.updated_at || "-"}
                     </span>
                 </div>
 
@@ -118,7 +143,7 @@ function ItemDetails() {
                     </span>
 
                     <span className="detail-value">
-                        -
+                        {item?.observacoes || "-"}
                     </span>
                 </div>
 

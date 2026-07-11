@@ -3,11 +3,19 @@ import { FiEdit2, FiTrash2 } from "react-icons/fi";
 
 import "../../styles/ItemRow.css";
 
-function ItemRow({ item, number }) {
+function ItemRow({
+            item,
+            number,
+            selected,
+            onClick,
+        }) { 
 
     return (
 
-        <div className="item-row">
+        <div
+            className={`item-row ${selected ? "selected" : ""}`}
+            onClick={onClick}
+        >
 
             <div className="column-number">
                 {number}

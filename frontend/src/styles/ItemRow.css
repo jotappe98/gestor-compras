@@ -6,11 +6,11 @@
     min-height:50px;
     border-bottom:1px solid #E5E5E5;
     transition:.2s;
+    transition: background-color .2s ease;
 }
 .item-row:hover{
 
     background:#F8F8F8;
-
     cursor:pointer;
 
 }
@@ -121,4 +121,10 @@
 
     color:#2E7D32;
 
+}
+
+
+
+.item-row.selected{
+    background:#EEF4FF;
 }

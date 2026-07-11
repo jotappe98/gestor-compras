@@ -1,7 +1,11 @@
 import "../../styles/ItemsTable.css";
 import ItemRow from "../ItemRow/ItemRow";
 
-function ItemsTable({ items }) {
+function ItemsTable({
+        items,
+        selectedItemId,
+        onSelectItem,
+    }) {
 
     return (
 
@@ -35,6 +39,8 @@ function ItemsTable({ items }) {
                             key={item.id}
                             item={item}
                             number={index + 1}
+                            selected={selectedItemId === item.id}
+                            onClick={() => onSelectItem(item.id)}
                         />
 
                     ))

@@ -23,3 +23,21 @@ export async function getItems() {
     )
 
 }
+
+export async function getItemById(id) {
+
+    const response = await fetch(
+        `${API_URL}/items/${id}`
+    );
+
+    if (!response.ok) {
+
+        throw new Error(
+            "Erro ao carregar detalhes do item."
+        );
+
+    }
+
+    return response.json();
+
+}

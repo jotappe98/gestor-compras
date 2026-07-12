@@ -4,26 +4,48 @@ import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import ItemsTable from "../../components/ItemsTable/ItemsTable";
 import ItemDetails from "../../components/ItemDetails/ItemDetails";
+import Pagination from "../../components/Pagination/Pagination";
 import "../../styles/PendingItems.css";
 import { FaPlusCircle } from "react-icons/fa";
 
 function PendingItems() {
-    const [items, setItems] = useState([]);
+    const [itemsData, setItemsData] = useState({
+        items: [],
+        page: 1,
+        total: 0,
+        total_pages: 1,
+        limit: 20,
+    });
+    const [queryParams, setQueryParams] = useState({
+
+        page: 1,
+
+        search: "",
+
+        order: "asc",
+
+        category: "",
+
+        priority: "",
+
+    });
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [selectedItem, setSelectedItem] = useState(null);
 
     useEffect(() => {
-        async function fetchData() {
-            try {
-                const data = await getItems();
-                setItems(data.items);
-            } catch (error) {
-                console.log(error);
-            }
-        }
 
-        fetchData();
-    }, []);
+            async function fetchData() {
+
+                try {
+                    const data = await getItems(queryParams);
+                    setItemsData(data);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            fetchData();
+
+        }, [queryParams]);
 
     useEffect(() => {
         async function fetchItemDetails() {
@@ -77,10 +99,38 @@ function PendingItems() {
 
                     <div className="items-section">
                         <ItemsTable
-                            items={items}
+                            items={itemsData.items}
                             selectedItemId={selectedItemId}
                             onSelectItem={setSelectedItemId}
                         />
+
+                        <div className="pagination-container">
+                            <Pagination
+                                page={itemsData.page}
+                                totalPages={itemsData.total_pages}
+                                onPrevious={() => {
+
+                                    if (itemsData.page <=1) return;
+
+                                    setQueryParams((prev) => ({
+                                        ...prev,
+                                        page: prev.page - 1,
+                                    }))
+                                }}
+
+                                onNext={() => {
+
+                                    if (itemsData.page >= itemsData.total_pages) return;
+
+                                    setQueryParams((prev) => ({
+                                        ...prev,
+                                        page: prev.page + 1,
+                                    }));
+
+                                }}
+                                
+                            />
+                        </div>
                     </div>
 
                     <ItemDetails 

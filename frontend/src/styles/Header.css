@@ -3,6 +3,7 @@
     align-items: stretch;
     gap: 0;
     padding: 0;
+    height:140px;
 }
 
 .header-logo {
@@ -11,11 +12,12 @@
     justify-content: center;
     align-items: center;
     background: #232321;
+    overflow: hidden;
 }
 
 .logo {
-    width: 190px;
-    height: auto;
+    width: auto;
+    height: 100%;
     object-fit: contain;
 }
 

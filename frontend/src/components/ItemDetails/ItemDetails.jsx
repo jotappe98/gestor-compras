@@ -37,7 +37,7 @@ function ItemDetails({item}) {
 
             <div className="details-grid">
 
-                <div className="detail-card large">
+                <div className="detail-card reference">
                     <span className="detail-label">
                         Produto
                     </span>

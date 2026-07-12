@@ -97,45 +97,54 @@ function PendingItems() {
                         </div>
                     </div>
 
-                    <div className="items-section">
-                        <ItemsTable
-                            items={itemsData.items}
-                            selectedItemId={selectedItemId}
-                            onSelectItem={setSelectedItemId}
-                        />
+                    <div className="workspace">
 
-                        <div className="pagination-container">
-                            <Pagination
+                        <div className="items-section">
+                            <ItemsTable
+                                items={itemsData.items}
                                 page={itemsData.page}
-                                totalPages={itemsData.total_pages}
-                                onPrevious={() => {
-
-                                    if (itemsData.page <=1) return;
-
-                                    setQueryParams((prev) => ({
-                                        ...prev,
-                                        page: prev.page - 1,
-                                    }))
-                                }}
-
-                                onNext={() => {
-
-                                    if (itemsData.page >= itemsData.total_pages) return;
-
-                                    setQueryParams((prev) => ({
-                                        ...prev,
-                                        page: prev.page + 1,
-                                    }));
-
-                                }}
-                                
+                                limit={itemsData.limit}
+                                selectedItemId={selectedItemId}
+                                onSelectItem={setSelectedItemId}
                             />
-                        </div>
-                    </div>
 
-                    <ItemDetails 
-                        item={selectedItem} 
-                    />
+                            <div className="pagination-container">
+                                <Pagination
+                                    page={itemsData.page}
+                                    totalPages={itemsData.total_pages}
+
+                                    hasPrevious={itemsData.page > 1}
+                                    hasNext={itemsData.page < itemsData.total_pages}
+
+                                    onPrevious={() => {
+
+                                        if (itemsData.page <= 1) return;
+
+                                        setQueryParams((prev) => ({
+                                            ...prev,
+                                            page: prev.page - 1,
+                                        }));
+
+                                    }}
+
+                                    onNext={() => {
+
+                                        if (itemsData.page >= itemsData.total_pages) return;
+
+                                        setQueryParams((prev) => ({
+                                            ...prev,
+                                            page: prev.page + 1,
+                                        }));
+
+                                    }}
+                                />
+                            </div>
+                        </div>
+
+                        <ItemDetails 
+                            item={selectedItem} 
+                        />
+                    </div>
                 </main>
             </div>
         </div>

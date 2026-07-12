@@ -4,8 +4,11 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 function Pagination({
 
     page,
-
     totalPages,
+    hasPrevious,
+    hasNext,
+    onPrevious,
+    onNext,
 
 }) {
 
@@ -15,7 +18,8 @@ function Pagination({
 
             <button
                 className="pagination-button"
-                disabled
+                onClick={onPrevious}
+                disabled={!hasPrevious}
             >
 
                 <FaChevronLeft />
@@ -32,7 +36,8 @@ function Pagination({
 
             <button
                 className="pagination-button"
-                disabled
+                onClick={onNext}
+                disabled={!hasNext}
             >
 
                 Próxima

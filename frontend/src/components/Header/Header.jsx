@@ -5,7 +5,13 @@ import Filters from "../Filters/Filters";
 
 import "../../styles/Header.css";
 
-function Header() {
+function Header({ 
+
+        search,
+        onSearchChange,
+
+        }) {
+
     return (
         <header className="header">
 
@@ -19,7 +25,10 @@ function Header() {
 
             <div className="header-actions">
 
-                <SearchBar />
+                <SearchBar
+                    value={search}
+                    onChange={onSearchChange}
+                />
 
                 <Filters />
 

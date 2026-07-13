@@ -151,6 +151,12 @@ class PurchaseService:
             type=int
         )
 
+        search = request.args.get(
+            "search",
+            default="",
+            type=str
+        )
+
         page = request.args.get(
             "page",
             default=1,
@@ -164,12 +170,14 @@ class PurchaseService:
         )
 
 
+
         data = (
 
             PurchaseRepository
             .get_pending(
                 categoria,
                 prioridade,
+                search,
                 page,
                 limit
             )

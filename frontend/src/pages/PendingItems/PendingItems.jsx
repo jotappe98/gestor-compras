@@ -39,6 +39,8 @@ function PendingItems() {
                 try {
                     const data = await getItems(queryParams);
                     setItemsData(data);
+                    setSelectedItemId(null);
+                    setSelectedItem(null);
                 } catch (error) {
                     console.log(error);
                 }
@@ -67,7 +69,16 @@ function PendingItems() {
 
     return (
         <div className="pending-page">
-            <Header />
+            <Header
+                search={queryParams.search}
+                onSearchChange={(event) => {
+                    setQueryParams((prev) => ({
+                        ...prev,
+                        search: event.target.value,
+                        page: 1,
+                    }));
+                }}
+            />
 
             <div className="content-area">
                 <Sidebar />

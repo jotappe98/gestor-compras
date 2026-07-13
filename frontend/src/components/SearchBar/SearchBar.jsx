@@ -1,8 +1,11 @@
 import { FaSearch } from "react-icons/fa";
-
 import "../../styles/SearchBar.css";
 
-function SearchBar() {
+function SearchBar({
+    
+        value,
+        onChange,}) {
+
 
     return (
 
@@ -13,6 +16,8 @@ function SearchBar() {
             <input
                 className="search-input"
                 placeholder="Buscar produto, fornecedor ou solicitante..."
+                value={value}
+                onChange={onChange}
             />
 
         </div>

@@ -83,6 +83,7 @@ class PurchaseRepository:
     def get_pending(
         categoria=None,
         prioridade=None,
+        search="",
         page=1,
         limit=20
     ):
@@ -123,6 +124,31 @@ class PurchaseRepository:
                 .filter(
                     PurchaseItem.prioridade_id
                     == prioridade
+                )
+
+            )
+
+        if search:
+
+            search = search.strip()
+
+            query = (
+
+                query
+                .filter(
+
+                    or_(
+
+                        PurchaseItem.produto.ilike(
+                            f"%{search}%"
+                        ),
+
+                        PurchaseItem.referencia_produto.ilike(
+                            f"%{search}%"
+                        )
+
+                    )
+
                 )
 
             )

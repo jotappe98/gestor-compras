@@ -1,4 +1,5 @@
 from app.extensions import db
+from app.models.requester import Requester
 from sqlalchemy import (
     func,
     or_
@@ -92,6 +93,7 @@ class PurchaseRepository:
 
             PurchaseItem
             .query
+            .join(Requester, PurchaseItem.solicitante_id == Requester.id)
             .filter(
 
                 PurchaseItem.status_id == 1,
@@ -145,8 +147,15 @@ class PurchaseRepository:
 
                         PurchaseItem.referencia_produto.ilike(
                             f"%{search}%"
-                        )
+                        ),
 
+                          PurchaseItem.fornecedor.ilike(
+                            f"%{search}%"
+                        ),
+
+                        Requester.nome.ilike(
+                        f"%{search}%"
+                        )
                     )
 
                 )

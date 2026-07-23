@@ -15,7 +15,7 @@ function SearchBar({
 
             <input
                 className="search-input"
-                placeholder="Buscar produto, fornecedor ou solicitante..."
+                placeholder="Buscar produto, fornecedor, referência ou solicitante..."
                 value={value}
                 onChange={onChange}
             />

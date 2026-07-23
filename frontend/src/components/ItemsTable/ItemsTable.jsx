@@ -33,7 +33,13 @@ function ItemsTable({
 
             <div className="items-body">
 
-                {
+                {items.length === 0 ? (
+
+                    <div className="no-items-message">
+                        Nenhum item encontrado...
+                    </div>
+
+                ) : (
 
                     items.map((item, index) => (
 
@@ -47,7 +53,7 @@ function ItemsTable({
 
                     ))
 
-                }
+                )}
 
             </div>
 

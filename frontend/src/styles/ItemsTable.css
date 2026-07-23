@@ -53,3 +53,8 @@
     overflow-x:hidden;
 
 }
+
+.no-items-message {
+    padding: 20px;
+    text-align: center;
+}

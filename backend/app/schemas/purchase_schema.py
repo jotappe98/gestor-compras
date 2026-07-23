@@ -5,6 +5,7 @@ class PurchaseCreateSchema:
         "quantidade",
         "categoria_id",
         "prioridade_id",
+        "solicitante_id"
     ]
 
 

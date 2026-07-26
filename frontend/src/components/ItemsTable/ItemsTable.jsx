@@ -3,8 +3,6 @@ import ItemRow from "../ItemRow/ItemRow";
 
 function ItemsTable({
         items,
-        page,
-        limit,
         selectedItemId,
         onSelectItem,
     }) {
@@ -41,12 +39,12 @@ function ItemsTable({
 
                 ) : (
 
-                    items.map((item, index) => (
+                    items.map((item) => (
 
                         <ItemRow
                             key={item.id}
                             item={item}
-                            number={((page - 1) * limit) + index + 1}
+                            number={item.position}
                             selected={selectedItemId === item.id}
                             onClick={() => onSelectItem(item.id)}
                         />

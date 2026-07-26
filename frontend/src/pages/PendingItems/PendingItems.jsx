@@ -16,38 +16,46 @@ function PendingItems() {
         total_pages: 1,
         limit: 20,
     });
+
     const [queryParams, setQueryParams] = useState({
-
-        page: 1,
-
         search: "",
-
         order: "asc",
-
         category: "",
-
         priority: "",
-
     });
+
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [selectedItem, setSelectedItem] = useState(null);
 
+    
+    const [mainPage, setMainPage] = useState(1);
+    const [searchPage, setSearchPage] = useState(1);
+
     useEffect(() => {
+        async function fetchData() {
+            try {
+                const page =
+                    queryParams.search.trim() === ""
+                        ? mainPage
+                        : searchPage;
 
-            async function fetchData() {
+                const params = {
+                    ...queryParams,
+                    page,
+                };
 
-                try {
-                    const data = await getItems(queryParams);
-                    setItemsData(data);
-                    setSelectedItemId(null);
-                    setSelectedItem(null);
-                } catch (error) {
-                    console.log(error);
-                }
+                const data = await getItems(params);
+
+                setItemsData(data);
+                setSelectedItemId(null);
+                setSelectedItem(null);
+            } catch (error) {
+                console.log(error);
             }
-            fetchData();
+        }
 
-        }, [queryParams]);
+        fetchData();
+    }, [queryParams, mainPage, searchPage]);
 
     useEffect(() => {
         async function fetchItemDetails() {
@@ -72,11 +80,37 @@ function PendingItems() {
             <Header
                 search={queryParams.search}
                 onSearchChange={(event) => {
-                    setQueryParams((prev) => ({
-                        ...prev,
-                        search: event.target.value,
-                        page: 1,
-                    }));
+                    const value = event.target.value;
+
+                    setQueryParams((prev) => {
+                        // começou uma pesquisa
+                        if (prev.search === "" && value !== "") {
+
+                            setSearchPage(1);
+
+                            return {
+                                ...prev,
+                                search: value,
+                            };
+                        }
+
+                        // limpou a pesquisa
+                        if (prev.search !== "" && value === "") {
+
+                            setSearchPage(1);
+
+                            return {
+                                ...prev,
+                                search: "",
+                            };
+                        }
+
+                        // continua digitando
+                        return {
+                            ...prev,
+                            search: value,
+                        };
+                    });
                 }}
             />
 
@@ -109,7 +143,6 @@ function PendingItems() {
                     </div>
 
                     <div className="workspace">
-
                         <div className="items-section">
                             <ItemsTable
                                 items={itemsData.items}
@@ -123,37 +156,32 @@ function PendingItems() {
                                 <Pagination
                                     page={itemsData.page}
                                     totalPages={itemsData.total_pages}
-
                                     hasPrevious={itemsData.page > 1}
                                     hasNext={itemsData.page < itemsData.total_pages}
-
                                     onPrevious={() => {
-
                                         if (itemsData.page <= 1) return;
 
-                                        setQueryParams((prev) => ({
-                                            ...prev,
-                                            page: prev.page - 1,
-                                        }));
-
+                                        if (queryParams.search.trim() === "") {
+                                            setMainPage((prev) => prev - 1);
+                                        } else {
+                                            setSearchPage((prev) => prev - 1);
+                                        }
                                     }}
-
                                     onNext={() => {
-
                                         if (itemsData.page >= itemsData.total_pages) return;
 
-                                        setQueryParams((prev) => ({
-                                            ...prev,
-                                            page: prev.page + 1,
-                                        }));
-
+                                        if (queryParams.search.trim() === "") {
+                                            setMainPage((prev) => prev + 1);
+                                        } else {
+                                            setSearchPage((prev) => prev + 1);
+                                        }
                                     }}
                                 />
                             </div>
                         </div>
 
-                        <ItemDetails 
-                            item={selectedItem} 
+                        <ItemDetails
+                            item={selectedItem}
                         />
                     </div>
                 </main>

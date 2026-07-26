@@ -1,11 +1,9 @@
 from app.models.purchase_item import (
     PurchaseItem
 )
-
 from app.repositories.purchase_repository import (
     PurchaseRepository
 )
-
 from app.schemas.purchase_schema import (
     PurchaseCreateSchema
 )
@@ -192,6 +190,7 @@ class PurchaseService:
 
             result.append({
 
+                "position": item.position,
                 "id": item.id,
 
                 "produto": item.produto,

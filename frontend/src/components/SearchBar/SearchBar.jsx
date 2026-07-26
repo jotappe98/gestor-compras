@@ -1,10 +1,13 @@
-import { FaSearch } from "react-icons/fa";
+import { FaSearch} from "react-icons/fa";
+import { IoCloseCircle } from "react-icons/io5";
 import "../../styles/SearchBar.css";
 
 function SearchBar({
     
         value,
-        onChange,}) {
+        onChange,
+        onClear,
+    }) {
 
 
     return (
@@ -19,6 +22,12 @@ function SearchBar({
                 value={value}
                 onChange={onChange}
             />
+            {value && (
+                <IoCloseCircle
+                    className="clear-search"
+                    onClick={onClear}
+                />
+            )}
 
         </div>
 

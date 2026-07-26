@@ -105,12 +105,21 @@ function PendingItems() {
                             };
                         }
 
+
                         // continua digitando
                         return {
                             ...prev,
                             search: value,
                         };
                     });
+                }}
+
+                onClearSearch={() => {
+                    setSearchPage(1);
+                    setQueryParams((prev) => ({
+                        ...prev,
+                        search: "",
+                    }));
                 }}
             />
 

@@ -10,7 +10,7 @@ function ItemDetails({item}) {
             <section className="item-details">
 
                 <h2 className="details-title">
-                    Detalhes do Item
+                    DETALHES DO ITEM
                 </h2>
 
                 <div className="details-empty">

@@ -9,6 +9,7 @@ function Header({
 
         search,
         onSearchChange,
+        onClearSearch,
 
         }) {
 
@@ -28,6 +29,7 @@ function Header({
                 <SearchBar
                     value={search}
                     onChange={onSearchChange}
+                    onClear={onClearSearch}
                 />
 
                 <Filters />

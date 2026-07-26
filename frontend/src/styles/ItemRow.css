@@ -7,26 +7,17 @@
     border-bottom:1px solid #E5E5E5;
     transition:.2s;
     transition: background-color .2s ease;
+    padding:0;
 }
 .item-row:hover{
-
     background:#F8F8F8;
     cursor:pointer;
 
 }
 
-.item-row > div{
-
-    padding:0;
-
-}
-
 .column-number{
-
     text-align:center;
-
     color:#666;
-
 }
 
 .column-product{
@@ -44,17 +35,18 @@
 }
 
 .column-status{
-
     display:flex;
-
     justify-content:center;
-
+    align-items:center;
 }
 
 .column-priority{
     text-align:center;
     color:#5F5F5F;
     font-size:13px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
 .column-supplier{
@@ -65,6 +57,9 @@
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 
 }
 
@@ -77,6 +72,9 @@
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
 
@@ -85,42 +83,31 @@
     justify-content:center;
     align-items:center;
     gap:4px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
 .status-badge{
-
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
     width:88px;
-
     height:20px;
-
     border-radius:18px;
-
     font-size:10px;
-
     font-weight:500;
 
 }
 
 .status-badge.pendente{
-
     background:#F2F2F2;
-
     color:#5B5B5B;
-
 }
 
 .status-badge.pedido-realizado{
-
     background:#E8F5E9;
-
     color:#2E7D32;
-
 }
 
 

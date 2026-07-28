@@ -10,6 +10,8 @@ export async function getItems(queryParams) {
         order: queryParams.order,
         category: queryParams.category,
         priority: queryParams.priority,
+        requester: queryParams.requester,
+        reference: queryParams.reference,
 
     });
 

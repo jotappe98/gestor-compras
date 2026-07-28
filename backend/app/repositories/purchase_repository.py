@@ -45,6 +45,8 @@ class PurchaseRepository:
     def get_pending(
         categoria=None,
         prioridade=None,
+        requester=None,
+        reference=None,
         search="",
         page=1,
         limit=15
@@ -70,6 +72,25 @@ class PurchaseRepository:
         if prioridade:
             query = query.filter(
                 PurchaseItem.prioridade_id == prioridade
+            )
+
+        if requester:
+            query = query.filter(
+                PurchaseItem.solicitante_id == requester
+            )
+
+        if reference == "with":
+            query = query.filter(
+                PurchaseItem.referencia_produto.isnot(None),
+                PurchaseItem.referencia_produto != ""
+            )
+
+        elif reference == "without":
+            query = query.filter(
+                or_(
+                    PurchaseItem.referencia_produto.is_(None),
+                    PurchaseItem.referencia_produto == ""
+                )
             )
 
         query = query.order_by(

@@ -140,13 +140,23 @@ class PurchaseService:
 
 
         categoria = request.args.get(
-            "categoria",
+            "category",
             type=int
         )
 
         prioridade = request.args.get(
-            "prioridade",
+            "priority",
             type=int
+        )
+
+        requester = request.args.get(
+            "requester",
+            type=int
+        )
+
+        reference = request.args.get(
+            "reference",
+            type=str
         )
 
         search = request.args.get(
@@ -175,9 +185,12 @@ class PurchaseService:
             .get_pending(
                 categoria,
                 prioridade,
+                requester,
+                reference,
                 search,
                 page,
                 limit
+
             )
 
         )

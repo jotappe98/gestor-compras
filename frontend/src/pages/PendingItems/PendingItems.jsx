@@ -214,6 +214,9 @@ function PendingItems() {
                 setFilters={setFilters}
                 onApply={() => {
 
+                    setMainPage(1);
+                    setSearchPage(1);
+
                     setQueryParams((previous) => ({
                         ...previous,
                         page: 1,

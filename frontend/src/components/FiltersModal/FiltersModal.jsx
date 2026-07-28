@@ -71,9 +71,9 @@ function FiltersModal({
                             >
                                 <option value="">Todas</option>
 
-                                <option value="3">Alta</option>
+                                <option value="1">Alta</option>
                                 <option value="2">Média</option>
-                                <option value="1">Baixa</option>
+                                <option value="3">Baixa</option>
                             </select>
                         </div>
 

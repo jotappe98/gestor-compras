@@ -20,3 +20,18 @@
     background: #343430;
     padding-right: 15px;
 }
+
+
+.filters-badge{
+    margin-left:8px;
+    min-width:22px;
+    height:22px;
+    border-radius:50%;
+    background:#2D6CDF;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:12px;
+    font-weight:600;
+}

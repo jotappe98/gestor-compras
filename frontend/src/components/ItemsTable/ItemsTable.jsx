@@ -5,6 +5,7 @@ function ItemsTable({
         items,
         selectedItemId,
         onSelectItem,
+        activeFiltersCount,
     }) {
 
     return (
@@ -34,7 +35,13 @@ function ItemsTable({
                 {items.length === 0 ? (
 
                     <div className="no-items-message">
-                        Nenhum item encontrado...
+
+                        {
+                            activeFiltersCount > 0
+                                ? "Nenhum item encontrado para os filtros selecionados."
+                                : "Nenhum item encontrado."
+                        }
+
                     </div>
 
                 ) : (

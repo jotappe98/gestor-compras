@@ -1,0 +1,161 @@
+.filters-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background: rgba(0,0,0,.18);
+
+    backdrop-filter: blur(4px);
+
+    z-index: 999;
+
+}
+
+.filters-modal {
+
+    width: 520px;
+
+    background: #232321;
+
+    border-radius: 10px;
+
+    padding: 28px;
+
+    color: white;
+
+    animation: modalOpen .18s ease;
+
+}
+
+.filters-modal h2{
+
+    margin-bottom:24px;
+
+}
+
+.filters-content{
+
+    min-height:220px;
+
+}
+
+.filters-actions{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:12px;
+
+}
+
+.cancel-button,
+.apply-button{
+
+    height:42px;
+
+    min-width:120px;
+
+    border:none;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+}
+
+.cancel-button{
+
+    background:#555;
+
+    color:white;
+
+}
+
+.apply-button{
+
+    background:#2D6CDF;
+
+    color:white;
+
+}
+
+@keyframes modalOpen{
+
+    from{
+
+        opacity:0;
+        transform:scale(.96);
+
+    }
+
+    to{
+
+        opacity:1;
+        transform:scale(1);
+
+    }
+
+}
+
+
+.filters-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:22px;
+
+}
+
+.filter-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+}
+
+.filter-group label{
+
+    font-size:15px;
+
+    font-weight:600;
+
+}
+
+.filter-group select{
+
+    height:42px;
+
+    border-radius:6px;
+
+    border:1px solid #4d4d4d;
+
+    background:#3a3a3a;
+
+    color:white;
+
+    padding:0 12px;
+
+    font-size:15px;
+
+}
+
+.filter-group select:focus{
+
+    outline:none;
+
+    border-color:#2f73ff;
+
+}

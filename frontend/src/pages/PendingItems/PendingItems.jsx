@@ -5,6 +5,7 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import ItemsTable from "../../components/ItemsTable/ItemsTable";
 import ItemDetails from "../../components/ItemDetails/ItemDetails";
 import Pagination from "../../components/Pagination/Pagination";
+import FiltersModal from "../../components/FiltersModal/FiltersModal";
 import "../../styles/PendingItems.css";
 import { FaPlusCircle } from "react-icons/fa";
 
@@ -14,7 +15,7 @@ function PendingItems() {
         page: 1,
         total: 0,
         total_pages: 1,
-        limit: 20,
+        limit: 15,
     });
 
     const [queryParams, setQueryParams] = useState({
@@ -22,14 +23,28 @@ function PendingItems() {
         order: "asc",
         category: "",
         priority: "",
+        requester: "",
+        reference: "",
     });
 
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [selectedItem, setSelectedItem] = useState(null);
 
-    
     const [mainPage, setMainPage] = useState(1);
     const [searchPage, setSearchPage] = useState(1);
+
+    const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+
+    const [filters, setFilters] = useState({
+        category: "",
+        priority: "",
+        requester: "",
+        reference: "",
+    });
+
+    const activeFiltersCount = Object.values(filters)
+    .filter((value) => value !== "")
+    .length;
 
     useEffect(() => {
         async function fetchData() {
@@ -39,12 +54,10 @@ function PendingItems() {
                         ? mainPage
                         : searchPage;
 
-                const params = {
+                const data = await getItems({
                     ...queryParams,
                     page,
-                };
-
-                const data = await getItems(params);
+                });
 
                 setItemsData(data);
                 setSelectedItemId(null);
@@ -83,9 +96,7 @@ function PendingItems() {
                     const value = event.target.value;
 
                     setQueryParams((prev) => {
-                        // começou uma pesquisa
                         if (prev.search === "" && value !== "") {
-
                             setSearchPage(1);
 
                             return {
@@ -94,9 +105,7 @@ function PendingItems() {
                             };
                         }
 
-                        // limpou a pesquisa
                         if (prev.search !== "" && value === "") {
-
                             setSearchPage(1);
 
                             return {
@@ -105,22 +114,24 @@ function PendingItems() {
                             };
                         }
 
-
-                        // continua digitando
                         return {
                             ...prev,
                             search: value,
                         };
                     });
                 }}
-
                 onClearSearch={() => {
                     setSearchPage(1);
+
                     setQueryParams((prev) => ({
                         ...prev,
                         search: "",
                     }));
                 }}
+
+                onOpenFilters={() => setIsFiltersOpen(true)}
+                activeFiltersCount={activeFiltersCount}
+
             />
 
             <div className="content-area">
@@ -144,6 +155,7 @@ function PendingItems() {
                         </div>
 
                         <div className="pending-actions">
+                          
                             <button className="add-button">
                                 <FaPlusCircle />
                                 Adicionar item
@@ -159,6 +171,7 @@ function PendingItems() {
                                 limit={itemsData.limit}
                                 selectedItemId={selectedItemId}
                                 onSelectItem={setSelectedItemId}
+                                activeFiltersCount={activeFiltersCount}
                             />
 
                             <div className="pagination-container">
@@ -189,12 +202,32 @@ function PendingItems() {
                             </div>
                         </div>
 
-                        <ItemDetails
-                            item={selectedItem}
-                        />
+                        <ItemDetails item={selectedItem} />
                     </div>
                 </main>
             </div>
+
+            <FiltersModal
+                isOpen={isFiltersOpen}
+                onClose={() => setIsFiltersOpen(false)}
+                filters={filters}
+                setFilters={setFilters}
+                onApply={() => {
+
+                    setQueryParams((previous) => ({
+                        ...previous,
+                        page: 1,
+                        category: filters.category,
+                        priority: filters.priority,
+                        requester: filters.requester,
+                        reference: filters.reference,
+                    }));
+
+                    setIsFiltersOpen(false);
+
+                }}
+            />
+
         </div>
     );
 }

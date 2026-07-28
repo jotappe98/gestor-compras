@@ -163,7 +163,7 @@ class PurchaseService:
 
         limit = request.args.get(
             "limit",
-            default=20,
+            default=15,
             type=int
         )
 

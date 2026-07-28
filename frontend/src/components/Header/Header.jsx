@@ -10,6 +10,8 @@ function Header({
         search,
         onSearchChange,
         onClearSearch,
+        onOpenFilters,
+        activeFiltersCount,
 
         }) {
 
@@ -32,7 +34,10 @@ function Header({
                     onClear={onClearSearch}
                 />
 
-                <Filters />
+                <Filters
+                    onOpen={onOpenFilters}
+                    activeFiltersCount={activeFiltersCount}
+                />
 
             </div>
 

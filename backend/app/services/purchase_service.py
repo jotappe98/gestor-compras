@@ -165,6 +165,12 @@ class PurchaseService:
             type=str
         )
 
+        order = request.args.get(
+            "order",
+            default="priority_asc",
+            type=str
+        )
+
         page = request.args.get(
             "page",
             default=1,
@@ -189,7 +195,8 @@ class PurchaseService:
                 reference,
                 search,
                 page,
-                limit
+                limit,
+                order
 
             )
 

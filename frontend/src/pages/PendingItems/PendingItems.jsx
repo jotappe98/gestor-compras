@@ -145,11 +145,54 @@ function PendingItems() {
                             </h1>
 
                             <div className="sort-row">
-                                <select className="sort-select">
-                                    <option>Ordem crescente</option>
-                                    <option>Ordem decrescente</option>
-                                    <option>Quantidade</option>
-                                    <option>Mais recentes</option>
+                                <select
+                                    className="sort-select"
+                                    value={queryParams.order}
+                                    onChange={(event) => {
+                                        setMainPage(1);
+                                        setSearchPage(1);
+
+                                        setQueryParams((previous) => ({
+                                            ...previous,
+                                            order: event.target.value,
+                                        }));
+                                    }}
+                                >
+                                    <option value="default">
+                                        Ordenar por
+                                    </option>
+
+                                    <option value="priority_asc">
+                                        Prioridade —alta→ baixa
+                                    </option>
+
+                                    <option value="priority_desc">
+                                        Prioridade —baixa→ alta
+                                    </option>
+
+                                    <option value="product_asc">
+                                        Produto — A → Z
+                                    </option>
+
+                                    <option value="product_desc">
+                                        Produto — Z → A
+                                    </option>
+
+                                    <option value="requester_asc">
+                                        Solicitante — A → Z
+                                    </option>
+
+                                    <option value="requester_desc">
+                                        Solicitante — Z → A
+                                    </option>
+
+                                    <option value="date_desc">
+                                        Data — mais recentes
+                                    </option>
+
+                                    <option value="date_asc">
+                                        Data — mais antigos
+                                    </option>
                                 </select>
                             </div>
                         </div>

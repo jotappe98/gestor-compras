@@ -49,7 +49,8 @@ class PurchaseRepository:
         reference=None,
         search="",
         page=1,
-        limit=15
+        limit=15,
+        order="priority_asc"
     ):
 
         query = (
@@ -93,10 +94,55 @@ class PurchaseRepository:
                 )
             )
 
-        query = query.order_by(
-            PurchaseItem.prioridade_id.asc(),
-            PurchaseItem.created_at.asc(),
-            PurchaseItem.id.asc()
+        if order == "default":
+            query = query.order_by(
+                PurchaseItem.prioridade_id.asc(),
+                PurchaseItem.created_at.asc(),
+                PurchaseItem.id.asc()
+            )
+
+        elif order == "priority_asc":
+            query = query.order_by(
+                PurchaseItem.prioridade_id.asc(),
+                PurchaseItem.created_at.asc(),
+                PurchaseItem.id.asc()
+            )
+
+        elif order == "priority_desc":
+            query = query.order_by(
+                PurchaseItem.prioridade_id.desc(),
+                PurchaseItem.created_at.asc(),
+                PurchaseItem.id.asc()
+            )
+
+        elif order == "product_asc":
+            query = query.order_by(
+                PurchaseItem.produto.asc()
+            )
+
+        elif order == "product_desc":
+            query = query.order_by(
+                PurchaseItem.produto.desc()
+            )
+
+        elif order == "requester_asc":
+            query = query.order_by(
+                Requester.nome.asc()
+            )
+
+        elif order == "requester_desc":
+            query = query.order_by(
+                Requester.nome.desc()
+            )
+
+        elif order == "date_asc":
+            query = query.order_by(
+                PurchaseItem.created_at.asc()
+        )
+            
+        elif order == "date_desc":
+            query = query.order_by(
+                PurchaseItem.created_at.desc()
         )
 
         #lista

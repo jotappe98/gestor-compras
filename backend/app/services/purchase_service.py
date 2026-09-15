@@ -8,6 +8,13 @@ from app.schemas.purchase_schema import (
     PurchaseCreateSchema
 )
 
+from app.repositories.requester_repository import (
+    RequesterRepository
+)
+
+from app.models.category import Category
+from app.models.priority import Priority
+from app.models.requester import Requester
 
 class PurchaseService:
 
@@ -26,6 +33,51 @@ class PurchaseService:
                 "ok": False,
                 "errors": errors,
             }
+
+
+        categoria = Category.query.get(
+            data["categoria_id"]
+        )
+
+        if not categoria:
+
+            return {
+                "ok": False,
+                "errors": [
+                    "categoria_id inválido"
+                ]
+            }
+
+        prioridade = Priority.query.get(
+            data["prioridade_id"]
+        )
+
+        if not prioridade:
+
+            return {
+                "ok": False,
+                "errors": [
+                    "prioridade_id inválido"
+                ]
+            }
+
+        requester = (
+            RequesterRepository
+            .get_by_codigo_erp(
+                data["codigo_erp"]
+            )
+        )
+
+        if not requester:
+
+            return {
+                "ok": False,
+                "errors": [
+                    "codigo_erp inválido ou solicitante inativo"
+                ]
+            }
+
+        
 
 
         duplicate = (
@@ -84,11 +136,11 @@ class PurchaseService:
                 "observacoes"
             ),
         
-            fornecedor=data.get("fornecedor"),
-
-            solicitante_id=data.get(
-                "solicitante_id"
+            fornecedor=data.get(
+                "fornecedor"
             ),
+
+            solicitante_id=requester.id,
 
         )
 

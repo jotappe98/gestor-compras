@@ -5,7 +5,7 @@ class PurchaseCreateSchema:
         "quantidade",
         "categoria_id",
         "prioridade_id",
-        "solicitante_id"
+        "codigo_erp"
     ]
 
     @staticmethod
@@ -111,5 +111,25 @@ class PurchaseCreateSchema:
                 errors.append(
                     "observacoes muito grande"
                 )
+
+
+        # Código ERP
+        if "codigo_erp" in data:
+
+            if not isinstance(
+                data["codigo_erp"],
+                int
+            ):
+
+                errors.append(
+                    "codigo_erp deve ser um número inteiro"
+                )
+
+            elif data["codigo_erp"] <= 0:
+
+                errors.append(
+                    "codigo_erp inválido"
+                )
+
 
         return errors

@@ -14,3 +14,13 @@ class Requester(db.Model):
         db.String(100),
         nullable=False
     )
+
+    codigo_erp = db.Column(
+        db.Integer,
+        nullable=False
+    )
+
+    ativo = db.Column(
+        db.Boolean,
+        default=True
+    )

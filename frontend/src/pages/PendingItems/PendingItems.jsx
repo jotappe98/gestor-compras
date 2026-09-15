@@ -20,7 +20,7 @@ function PendingItems() {
 
     const [queryParams, setQueryParams] = useState({
         search: "",
-        order: "asc",
+        order: "priority_asc",
         category: "",
         priority: "",
         requester: "",

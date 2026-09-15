@@ -9,7 +9,6 @@ from app.routes.purchase_routes import (
 from app.models.category import Category
 from app.models.priority import Priority
 from app.models.status_item import StatusItem
-from app.models.supplier import Supplier
 from app.models.requester import Requester
 from app.models.purchase_item import PurchaseItem
 from app.routes.requester_routes import (

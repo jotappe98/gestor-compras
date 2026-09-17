@@ -1,23 +1,62 @@
 from app.extensions import db
 from app.models.requester import Requester
 from sqlalchemy import func, or_
-
 from app.models.purchase_item import PurchaseItem
+import unicodedata
 
 
 class PurchaseRepository:
 
     @staticmethod
+    def normalize_product_name(text):
+
+        text = text.strip().lower()
+
+        text = unicodedata.normalize(
+            "NFD",
+            text
+        )
+
+        text = "".join(
+            char
+            for char in text
+            if unicodedata.category(char) != "Mn"
+        )
+
+        text = " ".join(
+            text.split()
+        )
+
+        return text
+    @staticmethod
     def find_duplicate(produto):
-        return (
+
+        normalized_product = (
+            PurchaseRepository
+            .normalize_product_name(produto)
+        )
+
+        items = (
             PurchaseItem.query
             .filter(
-                func.lower(PurchaseItem.produto) == produto.lower(),
                 PurchaseItem.status_id == 1,
                 PurchaseItem.movido_lixeira == False
             )
-            .first()
+            .all()
         )
+
+        for item in items:
+
+            normalized_existing = (
+                PurchaseRepository
+                .normalize_product_name(item.produto)
+            )
+
+            if normalized_existing == normalized_product:
+
+                return item
+
+        return None
 
     @staticmethod
     def get_by_id(item_id):

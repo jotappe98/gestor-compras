@@ -50,3 +50,22 @@ export async function getItemById(id) {
     return response.json();
 
 }
+
+
+export async function getRequesterByCode(codigo) {
+
+    const response = await fetch(
+        `${API_URL}/requesters/code/${codigo}`
+    );
+
+    if (!response.ok) {
+
+        throw new Error(
+            "Solicitante não encontrado"
+        );
+
+    }
+
+    return response.json();
+
+}

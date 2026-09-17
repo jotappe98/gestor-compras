@@ -8,6 +8,10 @@ import Pagination from "../../components/Pagination/Pagination";
 import FiltersModal from "../../components/FiltersModal/FiltersModal";
 import "../../styles/PendingItems.css";
 import { FaPlusCircle } from "react-icons/fa";
+import AddItemModal from "../../components/AddItemModal/AddItemModal";
+
+
+
 
 function PendingItems() {
     const [itemsData, setItemsData] = useState({
@@ -34,6 +38,8 @@ function PendingItems() {
     const [searchPage, setSearchPage] = useState(1);
 
     const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+
+    const [isAddItemOpen, setIsAddItemOpen] = useState(false);
 
     const [filters, setFilters] = useState({
         category: "",
@@ -199,7 +205,10 @@ function PendingItems() {
 
                         <div className="pending-actions">
                           
-                            <button className="add-button">
+                            <button
+                                className="add-button"
+                                onClick={() => setIsAddItemOpen(true)}
+                            >
                                 <FaPlusCircle />
                                 Adicionar item
                             </button>
@@ -272,6 +281,12 @@ function PendingItems() {
                     setIsFiltersOpen(false);
 
                 }}
+            />
+
+
+            <AddItemModal
+                isOpen={isAddItemOpen}
+                onClose={() => setIsAddItemOpen(false)}
             />
 
         </div>

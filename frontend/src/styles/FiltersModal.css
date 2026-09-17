@@ -72,19 +72,24 @@
 }
 
 .cancel-button{
-
-    background:#555;
-
+    background:rgba(255, 0, 0, 0.779);
     color:white;
+    transition: transform 0.3s ease;
 
 }
 
+.cancel-button:hover{
+    transform: translate(1px, -1px);
+}
+
 .apply-button{
-
     background:#2D6CDF;
-
     color:white;
+    transition: transform 0.3s ease;
+}
 
+.apply-button:hover{
+    transform: translate(1px, -1px);
 }
 
 @keyframes modalOpen{

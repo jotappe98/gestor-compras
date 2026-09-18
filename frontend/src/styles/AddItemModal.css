@@ -216,3 +216,56 @@
         overflow-y: auto;
     }
 }
+
+
+.duplicate-overlay {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.45);
+
+    backdrop-filter: blur(4px);
+
+    z-index: 10;
+}
+
+.duplicate-modal {
+    width: 90%;
+    max-width: 400px;
+
+    padding: 28px;
+
+    box-sizing: border-box;
+
+    border-radius: 10px;
+
+    background: #232321;
+    color: #ffffff;
+
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+
+    animation: modalOpen 0.18s ease;
+}
+
+.duplicate-modal h3 {
+    margin: 0 0 18px 0;
+    text-align: center;
+    color: #ffffff;
+}
+
+.duplicate-modal p {
+    margin: 0 0 24px 0;
+    text-align: center;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+.duplicate-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}

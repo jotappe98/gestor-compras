@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { getRequesterByCode } from "../../services/api";
+import { getRequesterByCode, createItem } from "../../services/api";
 import "../../styles/AddItemModal.css";
 
-function AddItemModal({ isOpen, onClose }) {
+function AddItemModal({ isOpen, onClose, onItemCreated }) {
   const [formData, setFormData] = useState({
     produto: "",
     quantidade: "",
@@ -18,6 +18,9 @@ function AddItemModal({ isOpen, onClose }) {
   const [solicitanteNome, setSolicitanteNome] = useState("");
   const [requesterStatus, setRequesterStatus] = useState("idle");
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [duplicateItem, setDuplicateItem] = useState(null);
 
   // Consulta o solicitante pelo código ERP
   useEffect(() => {
@@ -157,7 +160,6 @@ function AddItemModal({ isOpen, onClose }) {
     return Object.keys(newErrors).length === 0;
   }
 
-
   function handleKeyDown(event) {
     if (event.key !== "Enter") {
       return;
@@ -190,8 +192,12 @@ function AddItemModal({ isOpen, onClose }) {
     }
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
+
+    if (isSubmitting) {
+      return;
+    }
 
     const isValid = validateForm();
 
@@ -201,21 +207,129 @@ function AddItemModal({ isOpen, onClose }) {
 
     const dataToSend = {
       produto: formData.produto.trim(),
+
       prioridade_id: Number(formData.prioridade_id),
+
       codigo_erp: Number(formData.codigo_erp),
+
       quantidade: formData.quantidade
         ? Number(formData.quantidade)
         : undefined,
+
       categoria_id: formData.categoria_id
         ? Number(formData.categoria_id)
         : undefined,
+
       fornecedor: formData.fornecedor.trim() || undefined,
-      referencia_produto: formData.referencia_produto.trim() || undefined,
-      observacoes: formData.observacoes.trim() || undefined,
+
+      referencia_produto:
+        formData.referencia_produto.trim() || undefined,
+
+      observacoes:
+        formData.observacoes.trim() || undefined,
     };
 
-    console.log("Dados do formulário:", dataToSend);
+    try {
+      setIsSubmitting(true);
+      setSubmitError("");
+
+      const response = await createItem(dataToSend);
+
+      console.log("Item criado:", response);
+
+      onItemCreated();
+
+      onClose();
+    } catch (error) {
+      console.error("Erro ao adicionar item:", error);
+
+      if (error.data?.duplicate) {
+        setDuplicateItem(true);
+        return;
+      }
+
+      setSubmitError(
+        error.message || "Erro ao adicionar item."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   }
+
+  async function handleConfirmDuplicate() {
+    if (isSubmitting) {
+      return;
+    }
+
+    const dataToSend = {
+      produto: formData.produto.trim(),
+
+      prioridade_id: Number(formData.prioridade_id),
+
+      codigo_erp: Number(formData.codigo_erp),
+
+      quantidade: formData.quantidade
+        ? Number(formData.quantidade)
+        : undefined,
+
+      categoria_id: formData.categoria_id
+        ? Number(formData.categoria_id)
+        : undefined,
+
+      fornecedor: formData.fornecedor.trim() || undefined,
+
+      referencia_produto:
+        formData.referencia_produto.trim() || undefined,
+
+      observacoes:
+        formData.observacoes.trim() || undefined,
+
+      confirm_duplicate: true,
+    };
+
+    try {
+      setIsSubmitting(true);
+      setSubmitError("");
+
+      const response = await createItem(dataToSend);
+
+      console.log("Item duplicado criado:", response);
+
+      setDuplicateItem(false);
+
+      onItemCreated();
+
+      onClose();
+    } catch (error) {
+      console.error("Erro ao confirmar duplicidade:", error);
+
+      setSubmitError(
+        error.message || "Erro ao adicionar item."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+
+  }
+
+    function resetForm() {
+        setFormData({
+            produto: "",
+            quantidade: "",
+            unidade_medida: "",
+            categoria_id: "",
+            prioridade_id: "",
+            fornecedor: "",
+            referencia_produto: "",
+            codigo_erp: "",
+            observacoes: "",
+        });
+
+        setSolicitanteNome("");
+        setRequesterStatus("");
+        setSubmitError("");
+        setDuplicateItem(false);
+    }
 
   return (
     <div className="add-item-overlay" onClick={onClose}>
@@ -430,21 +544,73 @@ function AddItemModal({ isOpen, onClose }) {
             />
           </div>
 
+          {submitError && (
+            <div className="submit-error">
+              {submitError}
+            </div>
+          )}
+
           {/* Botões */}
           <div className="add-item-actions">
             <button
               type="button"
               className="cancel-button"
-              onClick={onClose}
+              onClick= {() =>{
+                resetForm();
+                onClose();
+              }}
             >
               Cancelar
             </button>
 
-            <button type="submit" className="add-confirm-button">
-              Adicionar
+            <button
+              type="submit"
+              className="add-confirm-button"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Adicionando..." : "Adicionar"}
             </button>
           </div>
         </form>
+
+        {duplicateItem && (
+          <div
+            className="duplicate-overlay"
+            onClick={() => setDuplicateItem(false)}
+          >
+            <div
+              className="duplicate-modal"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <h3>Item duplicado</h3>
+
+              <p>
+                Esse item já existe. Adicionar mesmo assim?
+              </p>
+
+              <div className="duplicate-actions">
+                <button
+                  type="button"
+                  className="cancel-button"
+                  onClick={() => setDuplicateItem(false)}
+                >
+                  Cancelar
+                </button>
+
+                <button
+                  type="button"
+                  className="add-confirm-button"
+                  onClick={handleConfirmDuplicate}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting
+                    ? "Adicionando..."
+                    : "Adicionar mesmo assim"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

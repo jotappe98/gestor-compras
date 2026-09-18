@@ -85,10 +85,15 @@ export async function createItem(itemData) {
 
     const data = await response.json();
 
-    if (!response.ok) {
-        throw new Error(
-            "Erro ao adicionar item"
+    if (!response.ok || data.ok === false) {
+        const error = new Error(
+            data.message || "Erro ao adicionar item"
         );
+
+        error.status = response.status;
+        error.data = data;
+
+        throw error;
     }
 
     return data;

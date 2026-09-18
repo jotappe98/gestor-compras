@@ -41,6 +41,9 @@ function PendingItems() {
 
     const [isAddItemOpen, setIsAddItemOpen] = useState(false);
 
+    const [itemsRefreshKey, setItemsRefreshKey] = useState(0);
+
+
     const [filters, setFilters] = useState({
         category: "",
         priority: "",
@@ -74,7 +77,7 @@ function PendingItems() {
         }
 
         fetchData();
-    }, [queryParams, mainPage, searchPage]);
+    }, [queryParams, mainPage, searchPage,  itemsRefreshKey]);
 
     useEffect(() => {
         async function fetchItemDetails() {
@@ -93,6 +96,14 @@ function PendingItems() {
 
         fetchItemDetails();
     }, [selectedItemId]);
+
+    function handleItemCreated() {
+        setMainPage(1);
+        setSearchPage(1);
+        setItemsRefreshKey((prev) => prev + 1);
+    }
+
+
 
     return (
         <div className="pending-page">
@@ -287,6 +298,7 @@ function PendingItems() {
             <AddItemModal
                 isOpen={isAddItemOpen}
                 onClose={() => setIsAddItemOpen(false)}
+                onItemCreated={handleItemCreated}
             />
 
         </div>

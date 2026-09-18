@@ -35,18 +35,22 @@ class PurchaseService:
             }
 
 
-        categoria = Category.query.get(
-            data["categoria_id"]
-        )
+        categoria = None
 
-        if not categoria:
+        if data.get("categoria_id") is not None:
 
-            return {
-                "ok": False,
-                "errors": [
-                    "categoria_id inválido"
-                ]
-            }
+            categoria = Category.query.get(
+                data["categoria_id"]
+            )
+
+            if not categoria:
+
+                return {
+                    "ok": False,
+                    "errors": [
+                        "categoria_id inválido"
+                    ]
+        }
 
         prioridade = Priority.query.get(
             data["prioridade_id"]
@@ -112,15 +116,11 @@ class PurchaseService:
 
         item = PurchaseItem(
 
-            produto=data["produto"],
+        produto=data["produto"],
 
-            quantidade=data[
-                "quantidade"
-            ],
+        quantidade=data.get("quantidade") or 1,
 
-            categoria_id=data[
-                "categoria_id"
-            ],
+        categoria_id=data.get("categoria_id"),
 
             prioridade_id=data[
                 "prioridade_id"
@@ -271,7 +271,11 @@ class PurchaseService:
 
                 "status": item.status.nome,
 
-                "categoria": item.categoria.nome,
+                "categoria": (
+                    item.categoria.nome
+                    if item.categoria
+                    else "-"
+                ),
 
                 "prioridade_id": item.prioridade_id,
 
@@ -334,7 +338,11 @@ class PurchaseService:
 
                 "status": item.status.nome,
 
-                "categoria": item.categoria.nome,
+                 "categoria": (
+                    item.categoria.nome
+                    if item.categoria
+                    else "-"
+                ),
 
                 "prioridade_id": item.prioridade_id,
 
@@ -410,7 +418,11 @@ class PurchaseService:
 
                 "status": item.status.nome,
 
-                "categoria": item.categoria.nome,
+                 "categoria": (
+                    item.categoria.nome
+                    if item.categoria
+                    else "-"
+                ),
 
                 "prioridade_id": item.prioridade_id,
 
@@ -514,7 +526,11 @@ class PurchaseService:
 
                 "status": item.status.nome,
 
-                "categoria": item.categoria.nome,
+                "categoria": (
+                    item.categoria.nome
+                    if item.categoria
+                    else "-"
+                ),
 
                 "prioridade_id": item.prioridade_id,
 
@@ -580,8 +596,11 @@ class PurchaseService:
             "categoria_id":
             item.categoria_id,
 
-            "categoria":
-            item.categoria.nome,
+             "categoria": (
+                item.categoria.nome
+                if item.categoria
+                else "-"
+            ),
 
             "prioridade_id":
             item.prioridade_id,

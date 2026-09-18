@@ -2,8 +2,6 @@ class PurchaseCreateSchema:
 
     required_fields = [
         "produto",
-        "quantidade",
-        "categoria_id",
         "prioridade_id",
         "codigo_erp"
     ]
@@ -44,7 +42,7 @@ class PurchaseCreateSchema:
                 )
 
         # Quantidade
-        if "quantidade" in data:
+        if "quantidade" in data and data["quantidade"] is not None:
 
             if not isinstance(data["quantidade"], int):
 

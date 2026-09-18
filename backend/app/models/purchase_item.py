@@ -44,7 +44,7 @@ class PurchaseItem(db.Model):
     categoria_id = db.Column(
         db.Integer,
         db.ForeignKey("categorias.id"),
-        nullable=False
+        nullable=True
     )
 
 

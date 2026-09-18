@@ -1,191 +1,218 @@
 .add-item-overlay {
-
     position: fixed;
-
     inset: 0;
 
     display: flex;
-
     justify-content: center;
-
     align-items: center;
 
-    background: rgba(0, 0, 0, .18);
+    padding: 20px;
+    box-sizing: border-box;
 
+    background: rgba(0, 0, 0, 0.18);
     backdrop-filter: blur(4px);
 
-    z-index: 999;
+    overflow: hidden;
 
+    z-index: 999;
 }
 
-.add-item-modal {
 
-    width: 600px;
+.add-item-modal {
+    width: min(800px, 100%);
+
+    box-sizing: border-box;
 
     background: #232321;
-
     border-radius: 10px;
 
     padding: 28px;
 
     color: white;
 
-    animation: modalOpen .18s ease;
+    overflow-x: hidden;
 
+    animation: modalOpen 0.18s ease;
 }
+
 
 .add-item-modal h2 {
-
-    margin-bottom: 24px;
-
+    margin: 0 0 24px 0;
 }
 
-.add-item-content {
 
-    min-height: 220px;
+/* Campos */
 
+.add-item-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    margin-bottom: 18px;
 }
+
+
+.add-item-field label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+
+.add-item-field input,
+.add-item-field select,
+.add-item-field textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 10px 12px;
+
+    border: 1px solid #555555;
+    border-radius: 6px;
+
+    background-color: #2f2f2d;
+    color: #ffffff;
+
+    font-size: 14px;
+
+    outline: none;
+}
+
+
+.add-item-field input::placeholder,
+.add-item-field textarea::placeholder {
+    color: #858585;
+}
+
+
+.add-item-field input:focus,
+.add-item-field select:focus,
+.add-item-field textarea:focus {
+    border-color: #8c8c8c;
+}
+
+
+.add-item-field select {
+    cursor: pointer;
+}
+
+
+.add-item-field textarea {
+    resize: vertical;
+    min-height: 90px;
+    font-family: inherit;
+}
+
+
+/* Duas colunas */
+
+.form-row {
+    display: flex;
+    gap: 16px;
+
+    align-items: flex-start;
+}
+
+
+.form-row .add-item-field {
+    flex: 1;
+    min-width: 0;
+}
+
+
+/* Botões */
 
 .add-item-actions {
-
     display: flex;
-
     justify-content: flex-end;
+    gap: 10px;
 
-    gap: 12px;
-
+    margin-top: 8px;
 }
 
+
 .add-item-actions .cancel-button {
-
     height: 42px;
-
     min-width: 120px;
 
     border: none;
-
     border-radius: 6px;
 
     cursor: pointer;
 
     background: rgba(255, 0, 0, 0.779);
-
     color: white;
-
 }
 
+
+.add-confirm-button {
+    height: 42px;
+    min-width: 120px;
+
+    padding: 10px 18px;
+
+    border: none;
+    border-radius: 6px;
+
+    background-color: #3f8f55;
+    color: #ffffff;
+
+    cursor: pointer;
+
+    transition: transform 0.3s ease;
+}
+
+
+.add-confirm-button:hover {
+    transform: translate(1px, -1px);
+}
+
+
+/* Scrollbar do modal */
+
+.add-item-modal::-webkit-scrollbar {
+    width: 8px;
+}
+
+
+.add-item-modal::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+.add-item-modal::-webkit-scrollbar-thumb {
+    background: #555555;
+    border-radius: 10px;
+}
+
+
+.add-item-modal::-webkit-scrollbar-thumb:hover {
+    background: #707070;
+}
+
+
+/* Animação */
+
 @keyframes modalOpen {
-
     from {
-
         opacity: 0;
-
-        transform: scale(.96);
-
+        transform: scale(0.96);
     }
 
     to {
-
         opacity: 1;
-
         transform: scale(1);
+    }
+}
 
+@media (max-height: 800px) {
+    .add-item-overlay {
+        overflow-y: auto;
     }
 
-}
-
-
-.add-item-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 18px;
-}
-
-.add-item-field label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #ffffff;
-}
-
-.add-item-field input {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #555555;
-  border-radius: 6px;
-  background-color: #2f2f2d;
-  color: #ffffff;
-  font-size: 14px;
-  outline: none;
-  box-sizing: border-box;
-}
-
-.add-item-field input:focus {
-  border-color: #8c8c8c;
-}
-
-.add-item-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 24px;
-}
-
-.add-confirm-button {
-  padding: 10px 18px;
-  border: none;
-  border-radius: 6px;
-  background-color: #3f8f55;
-  color: #ffffff;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-.add-confirm-button:hover {
-  transform: translate(1px, -1px);
-}
-
-.add-item-field select {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #555555;
-  border-radius: 6px;
-  background-color: #2f2f2d;
-  color: #ffffff;
-  font-size: 14px;
-  outline: none;
-  box-sizing: border-box;
-  cursor: pointer;
-}
-
-.add-item-field select:focus {
-  border-color: #8c8c8c;
-}
-
-
-.quantity-unit-group {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-}
-
-.quantity-field {
-  flex: 1;
-}
-
-.unit-field {
-  width: 85px;
-}
-
-.unit-field select {
-  width: 100%;
-  padding: 10px 6px;
-  border: 1px solid #555555;
-  border-radius: 6px;
-  background-color: #2f2f2d;
-  color: #ffffff;
-  font-size: 14px;
-  outline: none;
-  box-sizing: border-box;
-  cursor: pointer;
+    .add-item-modal {
+        max-height: calc(100vh - 40px);
+        overflow-y: auto;
+    }
 }

@@ -288,6 +288,8 @@ function AddItemModal({ isOpen, onClose, onItemCreated }) {
 
       onItemCreated();
 
+      resetForm();
+
       onClose();
     } catch (error) {
       console.error("Erro ao adicionar item:", error);
@@ -347,6 +349,8 @@ function AddItemModal({ isOpen, onClose, onItemCreated }) {
       setDuplicateItem(false);
 
       onItemCreated();
+
+      resetForm();
 
       onClose();
     } catch (error) {

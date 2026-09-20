@@ -19,8 +19,10 @@ function AddItemModal({ isOpen, onClose, onItemCreated }) {
   const [requesterStatus, setRequesterStatus] = useState("idle");
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [shakeField, setShakeField] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [duplicateItem, setDuplicateItem] = useState(null);
+  const [activeErrorField, setActiveErrorField] = useState("");
 
   // Consulta o solicitante pelo código ERP
   useEffect(() => {
@@ -114,6 +116,7 @@ function AddItemModal({ isOpen, onClose, onItemCreated }) {
     return null;
   }
 
+
   function handleChange(event) {
     const { name, value } = event.target;
 
@@ -125,17 +128,40 @@ function AddItemModal({ isOpen, onClose, onItemCreated }) {
       [name]: sanitizedValue,
     }));
 
-    // Limpa o erro do campo quando o usuário começa a preenchê-lo
+    // Limpa o erro do campo alterado
     setErrors((prev) => ({
       ...prev,
       [name]: "",
     }));
 
-    // Limpa o solicitante imediatamente ao alterar o código ERP
+    // Remove a mensagem de erro ativa
+    setActiveErrorField((current) =>
+      current === name ? "" : current
+    );
+
+    // Remove a animação do campo alterado
+    setShakeField((current) =>
+      current === name ? "" : current
+    );
+
+    // Limpa o solicitante ao alterar o código ERP
     if (name === "codigo_erp") {
       setSolicitanteNome("");
       setRequesterStatus("idle");
     }
+  }
+
+
+  function triggerShake(fieldName) {
+    setShakeField("");
+
+    requestAnimationFrame(() => {
+      setShakeField(fieldName);
+    });
+
+    setTimeout(() => {
+      setShakeField("");
+    }, 400);
   }
 
   function validateForm() {
@@ -157,7 +183,22 @@ function AddItemModal({ isOpen, onClose, onItemCreated }) {
 
     setErrors(newErrors);
 
-    return Object.keys(newErrors).length === 0;
+    const fieldOrder = [
+      "produto",
+      "prioridade_id",
+      "codigo_erp",
+    ];
+
+    const firstErrorField = fieldOrder.find(
+      (fieldName) => newErrors[fieldName]
+    );
+
+    setActiveErrorField(firstErrorField || "");
+
+    return {
+      isValid: Object.keys(newErrors).length === 0,
+      firstErrorField,
+    };
   }
 
   function handleKeyDown(event) {
@@ -199,9 +240,17 @@ function AddItemModal({ isOpen, onClose, onItemCreated }) {
       return;
     }
 
-    const isValid = validateForm();
+    const { isValid, firstErrorField } = validateForm();
 
     if (!isValid) {
+      triggerShake(firstErrorField);
+
+      const field = document.getElementById(firstErrorField);
+
+      if (field) {
+        field.focus();
+      }
+
       return;
     }
 
@@ -313,26 +362,40 @@ function AddItemModal({ isOpen, onClose, onItemCreated }) {
   }
 
     function resetForm() {
-        setFormData({
-            produto: "",
-            quantidade: "",
-            unidade_medida: "",
-            categoria_id: "",
-            prioridade_id: "",
-            fornecedor: "",
-            referencia_produto: "",
-            codigo_erp: "",
-            observacoes: "",
-        });
+      setFormData({
+        produto: "",
+        quantidade: "",
+        unidade_medida: "",
+        categoria_id: "",
+        prioridade_id: "",
+        fornecedor: "",
+        referencia_produto: "",
+        codigo_erp: "",
+        observacoes: "",
+      });
 
-        setSolicitanteNome("");
-        setRequesterStatus("");
-        setSubmitError("");
-        setDuplicateItem(false);
+      setSolicitanteNome("");
+      setRequesterStatus("idle");
+
+      setErrors({});
+      setActiveErrorField("");
+      setShakeField("");
+
+      setSubmitError("");
+      setDuplicateItem(false);
     }
 
+
   return (
-    <div className="add-item-overlay" onClick={onClose}>
+    <div
+      className="add-item-overlay"
+      onClick={(event) => {
+        if (event.target === event.currentTarget) {
+          resetForm();
+          onClose();
+        }
+      }}
+    >
       <div
         className="add-item-modal"
         onClick={(event) => event.stopPropagation()}
@@ -353,10 +416,19 @@ function AddItemModal({ isOpen, onClose, onItemCreated }) {
               onKeyDown={handleKeyDown}
               placeholder="Digite o nome do produto"
               autoFocus
+              className={`${
+                activeErrorField === "produto" && errors.produto
+                  ? "input-error"
+                  : ""
+              } ${
+                shakeField === "produto" ? "shake" : ""
+              }`}
             />
 
-            {errors.produto && (
-              <span className="field-error">{errors.produto}</span>
+            {activeErrorField === "produto" && errors.produto && (
+              <span className="field-error">
+                {errors.produto}
+              </span>
             )}
           </div>
 
@@ -429,6 +501,14 @@ function AddItemModal({ isOpen, onClose, onItemCreated }) {
                 value={formData.prioridade_id}
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}
+                className={`${
+                  activeErrorField === "prioridade_id" &&
+                  errors.prioridade_id
+                    ? "input-error"
+                    : ""
+                } ${
+                  shakeField === "prioridade_id" ? "shake" : ""
+                }`}
               >
                 <option value="">Selecione uma prioridade</option>
 
@@ -439,7 +519,8 @@ function AddItemModal({ isOpen, onClose, onItemCreated }) {
                 ))}
               </select>
 
-              {errors.prioridade_id && (
+              {activeErrorField === "prioridade_id" &&
+              errors.prioridade_id && (
                 <span className="field-error">
                   {errors.prioridade_id}
                 </span>
@@ -493,9 +574,18 @@ function AddItemModal({ isOpen, onClose, onItemCreated }) {
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}
                 placeholder="Código ERP"
+                className={`${
+                  activeErrorField === "codigo_erp" &&
+                  errors.codigo_erp
+                    ? "input-error"
+                    : ""
+                } ${
+                  shakeField === "codigo_erp" ? "shake" : ""
+                }`}
               />
 
-              {errors.codigo_erp && (
+              {activeErrorField === "codigo_erp" &&
+              errors.codigo_erp && (
                 <span className="field-error">
                   {errors.codigo_erp}
                 </span>

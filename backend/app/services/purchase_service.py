@@ -358,7 +358,25 @@ class PurchaseService:
                     item.solicitante.nome
                     if item.solicitante
                     else "-"
-                )
+                ),
+
+                "created_at": (
+                    item.created_at.strftime("%d/%m/%Y %H:%M")
+                    if item.created_at
+                    else "-"
+                ),
+
+                "completed_at": (
+                    item.completed_at.strftime("%d/%m/%Y %H:%M")
+                    if item.completed_at
+                    else "-"
+                ),
+
+                "trashed_at": (
+                item.trashed_at.strftime("%d/%m/%Y %H:%M")
+                if item.trashed_at
+                else "-"
+            ),
 
             })
 
@@ -440,7 +458,14 @@ class PurchaseService:
                     else "-"
                 ),
 
-                "movido_lixeira": item.movido_lixeira
+                "movido_lixeira": item.movido_lixeira,
+
+                "trashed_at": (
+                    item.trashed_at.strftime("%d/%m/%Y %H:%M")
+                    if item.trashed_at
+                    else "-"
+                ),
+
 
             })
 
@@ -647,6 +672,18 @@ class PurchaseService:
                 item.updated_at.strftime("%d/%m/%Y %H:%M")
                 if item.updated_at
                 else "-"
+            ),
+
+            "completed_at": (
+                item.completed_at.strftime("%d/%m/%Y %H:%M")
+                if item.completed_at
+                else "-"
+            ),
+
+            "trashed_at": (
+                item.trashed_at.strftime("%d/%m/%Y %H:%M")
+                if item.trashed_at
+                else "-"
             )
 
-        }
+}

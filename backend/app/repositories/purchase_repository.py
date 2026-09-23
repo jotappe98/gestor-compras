@@ -3,6 +3,7 @@ from app.models.requester import Requester
 from sqlalchemy import func, or_
 from app.models.purchase_item import PurchaseItem
 import unicodedata
+from datetime import datetime
 
 
 class PurchaseRepository:
@@ -64,12 +65,18 @@ class PurchaseRepository:
 
     @staticmethod
     def mark_as_ordered(item_id):
+
         item = PurchaseItem.query.get(item_id)
 
         if not item:
             return None
 
+        if item.status_id == 2:
+            return item
+
         item.status_id = 2
+        item.completed_at = datetime.now()
+
         db.session.commit()
 
         return item
@@ -265,12 +272,18 @@ class PurchaseRepository:
 
     @staticmethod
     def move_to_trash(item_id):
+
         item = PurchaseItem.query.get(item_id)
 
         if not item:
             return None
 
+        if item.movido_lixeira:
+            return item
+
         item.movido_lixeira = True
+        item.trashed_at = datetime.now()
+
         db.session.commit()
 
         return item

@@ -85,7 +85,18 @@ class PurchaseItem(db.Model):
         server_default=db.func.now(),
         onupdate=db.func.now()
     )
+    
 
+    completed_at = db.Column(
+        db.DateTime,
+        nullable=True
+    )
+
+    trashed_at = db.Column(
+        db.DateTime,
+        nullable=True
+    )
+    
     categoria = db.relationship(
     "Category"
     )

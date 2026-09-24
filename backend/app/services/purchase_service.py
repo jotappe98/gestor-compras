@@ -16,8 +16,8 @@ from app.models.category import Category
 from app.models.priority import Priority
 from app.models.requester import Requester
 
-class PurchaseService:
 
+class PurchaseService:
 
     @staticmethod
     def create(data):
@@ -34,7 +34,6 @@ class PurchaseService:
                 "errors": errors,
             }
 
-
         categoria = None
 
         if data.get("categoria_id") is not None:
@@ -50,7 +49,7 @@ class PurchaseService:
                     "errors": [
                         "categoria_id inválido"
                     ]
-        }
+                }
 
         prioridade = Priority.query.get(
             data["prioridade_id"]
@@ -81,16 +80,12 @@ class PurchaseService:
                 ]
             }
 
-        
-
-
         duplicate = (
             PurchaseRepository
             .find_duplicate(
                 data["produto"]
             )
         )
-
 
         if (
             duplicate
@@ -113,14 +108,17 @@ class PurchaseService:
                 )
             }
 
-
         item = PurchaseItem(
 
-        produto=data["produto"],
+            produto=data["produto"],
 
-        quantidade=data.get("quantidade") or 1,
+            quantidade=data.get("quantidade") or 1,
 
-        categoria_id=data.get("categoria_id"),
+            unidade_medida=data.get(
+                "unidade_medida"
+            ),
+
+            categoria_id=data.get("categoria_id"),
 
             prioridade_id=data[
                 "prioridade_id"
@@ -135,7 +133,7 @@ class PurchaseService:
             observacoes=data.get(
                 "observacoes"
             ),
-        
+
             fornecedor=data.get(
                 "fornecedor"
             ),
@@ -144,16 +142,13 @@ class PurchaseService:
 
         )
 
-
         PurchaseRepository.create(
             item
         )
 
-
         return {
             "ok": True
         }
-
 
     @staticmethod
     def mark_as_ordered(item_id):
@@ -175,7 +170,6 @@ class PurchaseService:
                 "Item não encontrado"
             }
 
-
         return {
 
             "ok": True,
@@ -184,12 +178,10 @@ class PurchaseService:
             "Pedido realizado"
         }
 
-
     @staticmethod
     def get_pending():
 
         from flask import request
-
 
         categoria = request.args.get(
             "category",
@@ -235,8 +227,6 @@ class PurchaseService:
             type=int
         )
 
-
-
         data = (
 
             PurchaseRepository
@@ -249,14 +239,11 @@ class PurchaseService:
                 page,
                 limit,
                 order
-
             )
 
         )
 
-
         result = []
-
 
         for item in data["items"]:
 
@@ -295,7 +282,6 @@ class PurchaseService:
 
             })
 
-
         return {
 
             "items":
@@ -314,7 +300,6 @@ class PurchaseService:
             data["total_pages"]
 
         }
-
 
     @staticmethod
     def get_history():
@@ -338,7 +323,7 @@ class PurchaseService:
 
                 "status": item.status.nome,
 
-                 "categoria": (
+                "categoria": (
                     item.categoria.nome
                     if item.categoria
                     else "-"
@@ -373,16 +358,14 @@ class PurchaseService:
                 ),
 
                 "trashed_at": (
-                item.trashed_at.strftime("%d/%m/%Y %H:%M")
-                if item.trashed_at
-                else "-"
-            ),
+                    item.trashed_at.strftime("%d/%m/%Y %H:%M")
+                    if item.trashed_at
+                    else "-"
+                ),
 
             })
 
-
         return result
-
 
     @staticmethod
     def move_to_trash(item_id):
@@ -404,7 +387,6 @@ class PurchaseService:
                 "Item não encontrado"
             }
 
-
         return {
 
             "ok": True,
@@ -412,7 +394,6 @@ class PurchaseService:
             "message":
             "Item movido para lixeira"
         }
-
 
     @staticmethod
     def get_trash():
@@ -436,7 +417,7 @@ class PurchaseService:
 
                 "status": item.status.nome,
 
-                 "categoria": (
+                "categoria": (
                     item.categoria.nome
                     if item.categoria
                     else "-"
@@ -466,11 +447,9 @@ class PurchaseService:
                     else "-"
                 ),
 
-
             })
 
         return result
-
 
     @staticmethod
     def restore_item(
@@ -495,7 +474,6 @@ class PurchaseService:
 
             }, 404
 
-
         if not item.movido_lixeira:
 
             return {
@@ -504,7 +482,6 @@ class PurchaseService:
                 "Item não está na lixeira"
 
             }, 400
-
 
         (
 
@@ -521,7 +498,6 @@ class PurchaseService:
             "Item restaurado com sucesso"
 
         }, 200
-
 
     @staticmethod
     def search_pending(
@@ -577,7 +553,6 @@ class PurchaseService:
 
         return result
 
-
     @staticmethod
     def get_by_id(
         item_id
@@ -612,6 +587,8 @@ class PurchaseService:
             "quantidade":
             item.quantidade,
 
+            "unidade_medida": item.unidade_medida,
+
             "referencia_produto":
             item.referencia_produto,
 
@@ -621,7 +598,7 @@ class PurchaseService:
             "categoria_id":
             item.categoria_id,
 
-             "categoria": (
+            "categoria": (
                 item.categoria.nome
                 if item.categoria
                 else "-"
@@ -639,9 +616,6 @@ class PurchaseService:
             "status":
             item.status.nome,
 
-
-
-
             "fornecedor":
             (
                 item.fornecedor
@@ -657,6 +631,12 @@ class PurchaseService:
                 item.solicitante.nome
                 if item.solicitante
                 else "-"
+            ),
+
+            "codigo_erp": (
+                item.solicitante.codigo_erp
+                if item.solicitante
+                else None
             ),
 
             "movido_lixeira":
@@ -686,4 +666,107 @@ class PurchaseService:
                 else "-"
             )
 
-}
+        }
+
+    @staticmethod
+    def update(item_id, data):
+
+        item = (
+            PurchaseRepository
+            .get_by_id(item_id)
+        )
+
+        if not item:
+            return {
+                "ok": False,
+                "message": "Item não encontrado"
+            }, 404
+
+        changes = {}
+
+        if "produto" in data:
+            produto = data["produto"].strip()
+
+            if produto != item.produto:
+                changes["produto"] = produto
+
+        if "quantidade" in data:
+            quantidade = data["quantidade"]
+
+            if quantidade != item.quantidade:
+                changes["quantidade"] = quantidade
+
+        if "unidade_medida" in data:
+            unidade_medida = data["unidade_medida"]
+            if unidade_medida != item.unidade_medida:
+                changes["unidade_medida"] = unidade_medida
+
+        if "categoria_id" in data:
+            categoria_id = data["categoria_id"]
+
+            if categoria_id != item.categoria_id:
+                changes["categoria_id"] = categoria_id
+
+        if "prioridade_id" in data:
+            prioridade_id = data["prioridade_id"]
+
+            if prioridade_id != item.prioridade_id:
+                changes["prioridade_id"] = prioridade_id
+
+        if "fornecedor" in data:
+            fornecedor = data["fornecedor"]
+
+            if fornecedor != item.fornecedor:
+                changes["fornecedor"] = fornecedor
+
+        if "referencia_produto" in data:
+            referencia = data["referencia_produto"]
+
+            if referencia != item.referencia_produto:
+                changes["referencia_produto"] = referencia
+
+        if "observacoes" in data:
+            observacoes = data["observacoes"]
+
+            if observacoes != item.observacoes:
+                changes["observacoes"] = observacoes
+
+        if "codigo_erp" in data:
+
+            requester = (
+                RequesterRepository
+                .get_by_codigo_erp(
+                    data["codigo_erp"]
+                )
+            )
+
+            if not requester:
+                return {
+                    "ok": False,
+                    "message": (
+                        "Código ERP inválido "
+                        "ou solicitante inativo"
+                    )
+                }, 400
+
+            if requester.id != item.solicitante_id:
+                changes["solicitante_id"] = requester.id
+
+        if not changes:
+
+            return {
+                "ok": True,
+                "changed": False,
+                "message": "Nenhuma alteração realizada"
+            }
+
+        for field, value in changes.items():
+            setattr(item, field, value)
+
+        PurchaseRepository.update(item)
+
+        return {
+            "ok": True,
+            "changed": True,
+            "message": "Item atualizado com sucesso"
+        }

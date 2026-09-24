@@ -326,3 +326,8 @@ class PurchaseRepository:
             )
             .all()
         )
+
+    @staticmethod
+    def update(item):
+        db.session.commit()
+        return item

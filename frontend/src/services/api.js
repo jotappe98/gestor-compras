@@ -98,3 +98,56 @@ export async function createItem(itemData) {
 
     return data;
 }
+
+
+export async function completeItem(id) {
+
+    const response = await fetch(
+        `${API_URL}/items/${id}/complete`,
+        {
+            method: "PATCH",
+        }
+    );
+
+    if (!response.ok) {
+
+        throw new Error(
+            "Erro ao marcar item como realizado."
+        );
+
+    }
+
+    return response.json();
+
+}
+
+
+export async function updateItem(id, itemData) {
+
+    const response = await fetch(
+        `${API_URL}/items/${id}`,
+        {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(itemData),
+        }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || data.ok === false) {
+
+        const error = new Error(
+            data.message || "Erro ao atualizar item"
+        );
+
+        error.status = response.status;
+        error.data = data;
+
+        throw error;
+    }
+
+    return data;
+}

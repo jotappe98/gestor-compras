@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import { getRequesterByCode, createItem } from "../../services/api";
 import "../../styles/AddItemModal.css";
 
-function AddItemModal({ isOpen, onClose, onItemCreated }) {
+function AddItemModal({ 
+  isOpen,
+  onClose, 
+  onItemCreated,
+  itemToEdit = null,
+  isEditMode = false,
+ }) {
   const [formData, setFormData] = useState({
     produto: "",
     quantidade: "",
@@ -61,6 +67,8 @@ function AddItemModal({ isOpen, onClose, onItemCreated }) {
       clearTimeout(timer);
     };
   }, [formData.codigo_erp]);
+
+  
 
   // Bloqueia o scroll enquanto o modal estiver aberto
   useEffect(() => {
@@ -264,6 +272,8 @@ function AddItemModal({ isOpen, onClose, onItemCreated }) {
       quantidade: formData.quantidade
         ? Number(formData.quantidade)
         : undefined,
+      
+      unidade_medida: formData.unidade_medida || undefined,
 
       categoria_id: formData.categoria_id
         ? Number(formData.categoria_id)
@@ -322,6 +332,8 @@ function AddItemModal({ isOpen, onClose, onItemCreated }) {
       quantidade: formData.quantidade
         ? Number(formData.quantidade)
         : undefined,
+
+      unidade_medida: formData.unidade_medida || undefined,
 
       categoria_id: formData.categoria_id
         ? Number(formData.categoria_id)

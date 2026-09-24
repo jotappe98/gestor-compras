@@ -24,6 +24,11 @@ class PurchaseItem(db.Model):
         default=1
     )
 
+    unidade_medida = db.Column(
+        db.String(20),
+        nullable=True
+    )
+
 
     referencia_produto = db.Column(
         db.String(100)

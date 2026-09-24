@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getItems, getItemById } from "../../services/api";
+import { getItems, getItemById, completeItem } from "../../services/api";
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import ItemsTable from "../../components/ItemsTable/ItemsTable";
@@ -102,6 +102,20 @@ function PendingItems() {
         setSearchPage(1);
         setItemsRefreshKey((prev) => prev + 1);
     }
+
+
+    async function handleCompleteItem(itemId) {
+            try {
+                await completeItem(itemId);
+
+                setSelectedItemId(null);
+                setSelectedItem(null);
+
+                setItemsRefreshKey((prev) => prev + 1);
+            } catch (error) {
+                console.log(error);
+            }
+        }
 
 
 
@@ -235,6 +249,8 @@ function PendingItems() {
                                 selectedItemId={selectedItemId}
                                 onSelectItem={setSelectedItemId}
                                 activeFiltersCount={activeFiltersCount}
+                                onComplete={handleCompleteItem}
+
                             />
 
                             <div className="pagination-container">

@@ -153,3 +153,20 @@ def get_item_details(
         )
 
     )
+
+
+@purchase_bp.route(
+    "/items/<int:item_id>",
+    methods=["PATCH"]
+)
+def update_item(item_id):
+
+    data = request.json
+
+    return (
+        PurchaseService
+        .update(
+            item_id,
+            data
+        )
+    )

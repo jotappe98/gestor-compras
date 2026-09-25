@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getItems, getItemById, completeItem } from "../../services/api";
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
@@ -43,6 +43,12 @@ function PendingItems() {
 
     const [itemsRefreshKey, setItemsRefreshKey] = useState(0);
 
+    const [itemToEdit, setItemToEdit] = useState(null);
+
+
+    const preserveSelectionRef = useRef(false);
+
+
 
     const [filters, setFilters] = useState({
         category: "",
@@ -68,16 +74,25 @@ function PendingItems() {
                     page,
                 });
 
+
+                console.log("Página solicitada:", page);
+                console.log("Página retornada:", data.page);
+
                 setItemsData(data);
-                setSelectedItemId(null);
-                setSelectedItem(null);
+                if (!preserveSelectionRef.current) {
+                    setSelectedItemId(null);
+                    setSelectedItem(null);
+                }
+
+                preserveSelectionRef.current = false;
+                
             } catch (error) {
                 console.log(error);
             }
         }
 
         fetchData();
-    }, [queryParams, mainPage, searchPage,  itemsRefreshKey]);
+    }, [queryParams, mainPage, searchPage,  itemsRefreshKey,]);
 
     useEffect(() => {
         async function fetchItemDetails() {
@@ -98,9 +113,36 @@ function PendingItems() {
     }, [selectedItemId]);
 
     function handleItemCreated() {
+        
         setMainPage(1);
         setSearchPage(1);
         setItemsRefreshKey((prev) => prev + 1);
+    }
+
+    async function handleItemUpdated(itemId) {
+        try {
+            const updatedItem = await getItemById(itemId);
+
+            setSelectedItemId(itemId);
+            setSelectedItem(updatedItem);
+
+            preserveSelectionRef.current = true;
+
+            setItemsRefreshKey((prev) => prev + 1);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async function handleEditItem(itemId) {
+        try {
+            const item = await getItemById(itemId);
+
+            setItemToEdit(item);
+            setIsAddItemOpen(true);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
 
@@ -250,6 +292,7 @@ function PendingItems() {
                                 onSelectItem={setSelectedItemId}
                                 activeFiltersCount={activeFiltersCount}
                                 onComplete={handleCompleteItem}
+                                onEdit={handleEditItem}
 
                             />
 
@@ -311,11 +354,19 @@ function PendingItems() {
             />
 
 
-            <AddItemModal
-                isOpen={isAddItemOpen}
-                onClose={() => setIsAddItemOpen(false)}
-                onItemCreated={handleItemCreated}
-            />
+            {isAddItemOpen && (
+                <AddItemModal
+                    key={itemToEdit?.id ?? "new"}
+                    isOpen={true}
+                    onClose={() => {
+                        setIsAddItemOpen(false);
+                        setItemToEdit(null);
+                    }}
+                    onItemCreated={handleItemCreated}
+                    onItemUpdated={handleItemUpdated}
+                    itemToEdit={itemToEdit}
+                />
+            )}
 
         </div>
     );

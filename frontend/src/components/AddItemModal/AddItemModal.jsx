@@ -1,28 +1,39 @@
 import { useEffect, useState } from "react";
-import { getRequesterByCode, createItem } from "../../services/api";
+import { getRequesterByCode, createItem, updateItem } from "../../services/api";
 import "../../styles/AddItemModal.css";
 
 function AddItemModal({ 
   isOpen,
   onClose, 
   onItemCreated,
+  onItemUpdated,
   itemToEdit = null,
-  isEditMode = false,
+
  }) {
   const [formData, setFormData] = useState({
-    produto: "",
-    quantidade: "",
-    unidade_medida: "",
-    categoria_id: "",
-    prioridade_id: "",
-    fornecedor: "",
-    referencia_produto: "",
-    codigo_erp: "",
-    observacoes: "",
+    produto: itemToEdit?.produto ?? "",
+    quantidade: itemToEdit?.quantidade ?? "",
+    unidade_medida: itemToEdit?.unidade_medida ?? "",
+    categoria_id: itemToEdit?.categoria_id
+      ? String(itemToEdit.categoria_id)
+      : "",
+    prioridade_id: itemToEdit?.prioridade_id
+      ? String(itemToEdit.prioridade_id)
+      : "",
+    fornecedor: itemToEdit?.fornecedor ?? "",
+    referencia_produto: itemToEdit?.referencia_produto ?? "",
+    codigo_erp: itemToEdit?.codigo_erp
+      ? String(itemToEdit.codigo_erp)
+      : "",
+    observacoes: itemToEdit?.observacoes ?? "",
   });
 
-  const [solicitanteNome, setSolicitanteNome] = useState("");
-  const [requesterStatus, setRequesterStatus] = useState("idle");
+  const [solicitanteNome, setSolicitanteNome] = useState(
+    itemToEdit?.solicitante ?? ""
+  );
+  const [requesterStatus, setRequesterStatus] = useState(
+    itemToEdit ? "success" : "idle"
+  );
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [shakeField, setShakeField] = useState(false);
@@ -123,6 +134,7 @@ function AddItemModal({
   if (!isOpen) {
     return null;
   }
+
 
 
   function handleChange(event) {
@@ -292,19 +304,30 @@ function AddItemModal({
       setIsSubmitting(true);
       setSubmitError("");
 
-      const response = await createItem(dataToSend);
+      let response;
 
-      console.log("Item criado:", response);
+      if (itemToEdit) {
+          response = await updateItem(itemToEdit.id, dataToSend);
 
-      onItemCreated();
+          console.log("Item atualizado:", response);
+
+          onItemUpdated(itemToEdit.id);
+      } else {
+          response = await createItem(dataToSend);
+
+          console.log("Item criado:", response);
+
+          onItemCreated();
+      }
 
       resetForm();
 
       onClose();
+      
     } catch (error) {
       console.error("Erro ao adicionar item:", error);
 
-      if (error.data?.duplicate) {
+      if (error.data?.duplicate && !itemToEdit) {
         setDuplicateItem(true);
         return;
       }
@@ -416,7 +439,9 @@ function AddItemModal({
         className="add-item-modal"
         onClick={(event) => event.stopPropagation()}
       >
-        <h2>Adicionar item</h2>
+        <h2>
+          {itemToEdit ? "Editar item" : "Adicionar item"}
+        </h2>
 
         <form onSubmit={handleSubmit}>
           {/* Produto */}
@@ -431,6 +456,7 @@ function AddItemModal({
               onChange={handleChange}
               onKeyDown={handleKeyDown}
               placeholder="Digite o nome do produto"
+              autocomplete="off"
               autoFocus
               className={`${
                 activeErrorField === "produto" && errors.produto
@@ -557,6 +583,7 @@ function AddItemModal({
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}
                 placeholder="Fornecedor"
+                autocomplete="off"
               />
             </div>
 
@@ -571,6 +598,7 @@ function AddItemModal({
                 value={formData.referencia_produto}
                 onChange={handleChange}
                 placeholder="Referência do produto"
+                autocomplete="off"
               />
             </div>
           </div>
@@ -590,6 +618,7 @@ function AddItemModal({
                 onChange={handleChange}
                 onKeyDown={handleKeyDown}
                 placeholder="Código ERP"
+                autocomplete="off"
                 className={`${
                   activeErrorField === "codigo_erp" &&
                   errors.codigo_erp
@@ -674,7 +703,13 @@ function AddItemModal({
               className="add-confirm-button"
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Adicionando..." : "Adicionar"}
+              {isSubmitting
+                ? itemToEdit
+                  ? "Salvando..."
+                  : "Adicionando..."
+                : itemToEdit
+                  ? "Salvar alterações"
+                  : "Adicionar"}
             </button>
           </div>
         </form>

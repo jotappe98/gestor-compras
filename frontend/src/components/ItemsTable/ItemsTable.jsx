@@ -7,6 +7,7 @@ function ItemsTable({
         onSelectItem,
         activeFiltersCount,
         onComplete,
+        onEdit,
     }) {
 
     return (
@@ -56,6 +57,7 @@ function ItemsTable({
                             selected={selectedItemId === item.id}
                             onClick={() => onSelectItem(item.id)}
                             onComplete={onComplete}
+                            onEdit={onEdit}
                         />
 
                     ))

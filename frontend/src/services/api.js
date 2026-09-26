@@ -33,6 +33,39 @@ export async function getItems(queryParams) {
 
 }
 
+
+
+
+export async function getItemPage(id, queryParams) {
+
+    const params = new URLSearchParams({
+
+        search: queryParams.search || "",
+        order: queryParams.order || "priority_asc",
+        category: queryParams.category || "",
+        priority: queryParams.priority || "",
+        requester: queryParams.requester || "",
+        reference: queryParams.reference || "",
+        limit: queryParams.limit || 15,
+
+    });
+
+    const response = await fetch(
+        `${API_URL}/items/${id}/page?${params}`
+    );
+
+    if (!response.ok) {
+
+        throw new Error(
+            "Erro ao localizar a página do item."
+        );
+
+    }
+
+    return response.json();
+
+}
+
 export async function getItemById(id) {
 
     const response = await fetch(

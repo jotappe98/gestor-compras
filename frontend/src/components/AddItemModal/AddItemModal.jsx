@@ -317,7 +317,7 @@ function AddItemModal({
 
           console.log("Item criado:", response);
 
-          onItemCreated();
+          onItemCreated(response.id);
       }
 
       resetForm();
@@ -383,7 +383,7 @@ function AddItemModal({
 
       setDuplicateItem(false);
 
-      onItemCreated();
+      onItemCreated(response.id);
 
       resetForm();
 

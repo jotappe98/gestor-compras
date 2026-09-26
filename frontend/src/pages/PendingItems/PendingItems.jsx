@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { getItems, getItemById, completeItem } from "../../services/api";
+import { getItems, getItemById, getItemPage, completeItem } from "../../services/api";
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import ItemsTable from "../../components/ItemsTable/ItemsTable";
@@ -44,6 +44,8 @@ function PendingItems() {
     const [itemsRefreshKey, setItemsRefreshKey] = useState(0);
 
     const [itemToEdit, setItemToEdit] = useState(null);
+
+    const [pendingScrollItemId, setPendingScrollItemId] = useState(null);
 
 
     const preserveSelectionRef = useRef(false);
@@ -112,11 +114,82 @@ function PendingItems() {
         fetchItemDetails();
     }, [selectedItemId]);
 
-    function handleItemCreated() {
-        
-        setMainPage(1);
-        setSearchPage(1);
-        setItemsRefreshKey((prev) => prev + 1);
+    async function handleItemCreated(itemId) {
+        try {
+
+            setPendingScrollItemId(itemId);
+
+            const limit = itemsData.limit || 15;
+
+
+            // Consulta a página usando a busca e os filtros atuais
+            let result = await getItemPage(itemId, {
+                ...queryParams,
+                limit,
+            });
+
+            // Se o item não estiver na listagem atual,
+            // remove a busca e os filtros aplicados
+            if (result.page === null) {
+                const resetParams = {
+                    ...queryParams,
+                    search: "",
+                    category: "",
+                    priority: "",
+                    requester: "",
+                    reference: "",
+                    limit,
+                };
+
+                // Descobre a página sem os filtros
+                result = await getItemPage(
+                    itemId,
+                    resetParams
+                );
+
+                setFilters({
+                    category: "",
+                    priority: "",
+                    requester: "",
+                    reference: "",
+                });
+
+                setQueryParams((prev) => ({
+                    ...prev,
+                    search: "",
+                    category: "",
+                    priority: "",
+                    requester: "",
+                    reference: "",
+                }));
+
+                setSearchPage(1);
+                setMainPage(result.page || 1);
+
+            } else if (queryParams.search.trim() !== "") {
+
+                // A busca está ativa: atualiza a página da busca
+                setSearchPage(result.page);
+
+            } else {
+
+                // Sem busca: atualiza a página principal
+                setMainPage(result.page);
+            }
+
+            // Atualiza a listagem
+            setItemsRefreshKey((prev) => prev + 1);
+
+        } catch (error) {
+            console.error(
+                "Erro ao localizar o item criado:",
+                error
+            );
+
+            // Mesmo se a consulta da página falhar,
+            // atualiza a listagem para não deixar o cadastro desatualizado
+            setItemsRefreshKey((prev) => prev + 1);
+        }
     }
 
     async function handleItemUpdated(itemId) {
@@ -293,7 +366,8 @@ function PendingItems() {
                                 activeFiltersCount={activeFiltersCount}
                                 onComplete={handleCompleteItem}
                                 onEdit={handleEditItem}
-
+                                pendingScrollItemId={pendingScrollItemId}
+                                onPendingScrollComplete={() => setPendingScrollItemId(null)}
                             />
 
                             <div className="pagination-container">

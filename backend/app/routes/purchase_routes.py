@@ -60,6 +60,25 @@ def get_items():
     )
 
 
+
+@purchase_bp.route(
+    "/items/<int:item_id>/page",
+    methods=["GET"]
+)
+def get_item_page(item_id):
+
+    return (
+        PurchaseService
+        .get_page_for_item(
+            item_id
+        )
+    )
+
+
+
+
+
+
 @purchase_bp.route(
     "/items/history",
     methods=["GET"]

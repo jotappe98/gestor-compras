@@ -147,7 +147,8 @@ class PurchaseService:
         )
 
         return {
-            "ok": True
+            "ok": True,
+            "id": item.id
         }
 
     @staticmethod
@@ -300,6 +301,74 @@ class PurchaseService:
             data["total_pages"]
 
         }
+
+
+    @staticmethod
+    def get_page_for_item(item_id):
+
+        from flask import request
+
+        categoria = request.args.get(
+            "category",
+            type=int
+        )
+
+        prioridade = request.args.get(
+            "priority",
+            type=int
+        )
+
+        requester = request.args.get(
+            "requester",
+            type=int
+        )
+
+        reference = request.args.get(
+            "reference",
+            type=str
+        )
+
+        search = request.args.get(
+            "search",
+            default="",
+            type=str
+        )
+
+        order = request.args.get(
+            "order",
+            default="priority_asc",
+            type=str
+        )
+
+        limit = request.args.get(
+            "limit",
+            default=15,
+            type=int
+        )
+
+        # Valida o limite da paginação
+        if limit < 1:
+            limit = 15
+
+        page = PurchaseRepository.get_page_for_item(
+            item_id=item_id,
+            categoria=categoria,
+            prioridade=prioridade,
+            requester=requester,
+            reference=reference,
+            search=search,
+            limit=limit,
+            order=order
+        )
+
+        return {
+            "id": item_id,
+            "page": page
+        }
+    
+
+
+
 
     @staticmethod
     def get_history():

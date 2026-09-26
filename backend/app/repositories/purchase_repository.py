@@ -258,6 +258,64 @@ class PurchaseRepository:
             "limit": limit,
             "total_pages": total_pages
         }
+    
+
+
+    @staticmethod
+    def get_page_for_item(
+        item_id,
+        categoria=None,
+        prioridade=None,
+        requester=None,
+        reference=None,
+        search="",
+        limit=15,
+        order="priority_asc"
+    ):
+
+        # Busca o total de itens usando os mesmos filtros
+        result = PurchaseRepository.get_pending(
+            categoria=categoria,
+            prioridade=prioridade,
+            requester=requester,
+            reference=reference,
+            search=search,
+            page=1,
+            limit=1,
+            order=order
+        )
+
+        total = result["total"]
+
+        if total == 0:
+            return None
+
+        # Recupera todos os itens que correspondem aos filtros
+        result = PurchaseRepository.get_pending(
+            categoria=categoria,
+            prioridade=prioridade,
+            requester=requester,
+            reference=reference,
+            search=search,
+            page=1,
+            limit=total,
+            order=order
+        )
+
+        items = result["items"]
+
+        # Descobre a posição do item na lista filtrada
+        for index, item in enumerate(items):
+            if item.id == item_id:
+
+                # Calcula a página considerando o limite
+                return (index // limit) + 1
+
+        # O item não está presente na listagem filtrada
+        return None
+
+
+
 
     @staticmethod
     def get_history():

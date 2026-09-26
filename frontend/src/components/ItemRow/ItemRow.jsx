@@ -7,6 +7,7 @@ function ItemRow({
     item,
     number,
     selected,
+    highlighted,
     onClick,
     onComplete,
     onEdit,
@@ -14,7 +15,14 @@ function ItemRow({
 }) {
     return (
         <div
-            className={`item-row ${selected ? "selected" : ""}`}
+            data-item-id={item.id}
+            className={[
+                "item-row",
+                selected ? "selected" : "",
+                highlighted ? "item-row--highlighted" : "",
+            ]
+                .filter(Boolean)
+                .join(" ")}
             onClick={onClick}
         >
             <div className="column-number">

@@ -36,7 +36,11 @@ function ItemRow({
             <div className="column-status">
                 <span
                     className={`status-badge ${
-                        item.status?.toLowerCase().replace(" ", "-")
+                        item.status
+                            ?.toLowerCase()
+                            .normalize("NFD")
+                            .replace(/[\u0300-\u036f]/g, "")
+                            .replace(/\s+/g, "-")
                     }`}
                 >
                     {item.status}
@@ -44,7 +48,17 @@ function ItemRow({
             </div>
 
             <div className="column-priority">
-                {item.prioridade}
+                <span
+                    className={`priority-badge ${
+                        item.prioridade
+                            ?.toLowerCase()
+                            .normalize("NFD")
+                            .replace(/[\u0300-\u036f]/g, "")
+                            .replace(/\s+/g, "-")
+                    }`}
+                >
+                    {item.prioridade}
+                </span>
             </div>
 
             <div className="column-supplier">
@@ -61,6 +75,8 @@ function ItemRow({
             >
                 <button
                     className="action-button complete-button"
+                    title="Marcar pedido como realizado"
+                    aria-label="Marcar pedido como realizado"
                     onClick={() => onComplete(item.id)}
                 >
                     <FaCheck />
@@ -68,6 +84,8 @@ function ItemRow({
 
                 <button
                     className="action-button edit-button"
+                    title="Editar item"
+                    aria-label="Editar item"
                     onClick={() => onEdit(item.id)}
                 >
                     <FiEdit2 />
@@ -75,6 +93,8 @@ function ItemRow({
 
                 <button
                     className="action-button trash-button"
+                    title="Mover item para a lixeira"
+                    aria-label="Mover item para a lixeira"
                     onClick={() => onTrash(item.id)}
                 >
                     <FiTrash2 />

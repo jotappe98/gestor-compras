@@ -7,7 +7,7 @@ import ItemDetails from "../../components/ItemDetails/ItemDetails";
 import Pagination from "../../components/Pagination/Pagination";
 import FiltersModal from "../../components/FiltersModal/FiltersModal";
 import "../../styles/PendingItems.css";
-import { FaPlusCircle } from "react-icons/fa";
+import { FaPlusCircle, FaChevronDown } from "react-icons/fa";
 import AddItemModal from "../../components/AddItemModal/AddItemModal";
 import TrashConfirmModal from "../../components/TrashConfirmModal/TrashConfirmModal";
 
@@ -25,7 +25,7 @@ function PendingItems() {
 
     const [queryParams, setQueryParams] = useState({
         search: "",
-        order: "priority_asc",
+        order: "default",
         category: "",
         priority: "",
         requester: "",
@@ -55,6 +55,12 @@ function PendingItems() {
     const [itemToTrash, setItemToTrash] = useState(null);
 
     const [isTrashing, setIsTrashing] = useState(false);
+
+    const [completingItemId, setCompletingItemId] = useState(null);
+
+    const [exitingItemId, setExitingItemId] = useState(null);
+
+    const [trashingItemId, setTrashingItemId] = useState(null);
 
 
 
@@ -226,17 +232,63 @@ function PendingItems() {
 
 
     async function handleCompleteItem(itemId) {
-            try {
-                await completeItem(itemId);
-
-                setSelectedItemId(null);
-                setSelectedItem(null);
-
-                setItemsRefreshKey((prev) => prev + 1);
-            } catch (error) {
-                console.log(error);
-            }
+        // Impede iniciar outra confirmação durante a animação
+        if (completingItemId !== null) {
+            return;
         }
+
+        setCompletingItemId(itemId);
+
+        try {
+            // Registra a conclusão no backend
+            await completeItem(itemId);
+
+            // Atualiza o status localmente, sem remover a linha
+            setItemsData((prev) => ({
+                ...prev,
+                items: prev.items.map((item) =>
+                    item.id === itemId
+                        ? {
+                            ...item,
+                            status: "PEDIDO_REALIZADO",
+                        }
+                        : item
+                ),
+            }));
+
+            // Mantém o item visível por segundos
+            setTimeout(() => {
+                setExitingItemId(itemId);
+            }, 1200);
+
+            // Aguarda a animação de saída terminar
+            setTimeout(() => {
+                if (selectedItemId === itemId) {
+                    setSelectedItemId(null);
+                    setSelectedItem(null);
+                }
+
+                setExitingItemId(null);
+                setCompletingItemId(null);
+
+                // Busca novamente os itens pendentes
+                setItemsRefreshKey((prev) => prev + 1);
+            }, 2300);
+
+        } catch (error) {
+            console.error(
+                "Erro ao marcar pedido como realizado:",
+                error
+            );
+
+            setCompletingItemId(null);
+            setExitingItemId(null);
+
+            window.alert(
+                "Não foi possível marcar o pedido como realizado."
+            );
+        }
+    }
 
     
     
@@ -261,7 +313,12 @@ function PendingItems() {
     }
 
     async function handleConfirmTrash() {
-        if (!itemToTrash || isTrashing) {
+        if (
+            !itemToTrash ||
+            isTrashing ||
+            completingItemId !== null ||
+            trashingItemId !== null
+        ) {
             return;
         }
 
@@ -270,16 +327,33 @@ function PendingItems() {
         try {
             setIsTrashing(true);
 
+            // Registra a movimentação no backend
             await trashItem(itemId);
 
-            if (selectedItemId === itemId) {
-                setSelectedItemId(null);
-                setSelectedItem(null);
-            }
-
+            // Fecha o modal após a confirmação do backend
             setItemToTrash(null);
 
-            setItemsRefreshKey((prev) => prev + 1);
+            // Inicia o destaque visual da linha
+            setTrashingItemId(itemId);
+
+            // Aguarda antes de iniciar a saída
+            setTimeout(() => {
+                setExitingItemId(itemId);
+            }, 1200);
+
+            // Aguarda a animação terminar
+            setTimeout(() => {
+                if (selectedItemId === itemId) {
+                    setSelectedItemId(null);
+                    setSelectedItem(null);
+                }
+
+                setTrashingItemId(null);
+                setExitingItemId(null);
+
+                // Atualiza a lista de pendentes
+                setItemsRefreshKey((prev) => prev + 1);
+            }, 2300);
 
         } catch (error) {
             console.error(
@@ -355,55 +429,51 @@ function PendingItems() {
                             </h1>
 
                             <div className="sort-row">
-                                <select
-                                    className="sort-select"
-                                    value={queryParams.order}
-                                    onChange={(event) => {
-                                        setMainPage(1);
-                                        setSearchPage(1);
+                                <div className="sort-select-wrapper">
+                                    <select
+                                        className="sort-select"
+                                        value={queryParams.order}
+                                        onChange={(event) => {
+                                            setMainPage(1);
+                                            setSearchPage(1);
+                                            setQueryParams((previous) => ({
+                                                ...previous,
+                                                order: event.target.value,
+                                            }));
+                                        }}
+                                    >
+                                        <option value="default">
+                                            Ordenar itens por
+                                        </option>
+                                        <option value="priority_asc">
+                                            Prioridade —alta→ baixa
+                                        </option>
+                                        <option value="priority_desc">
+                                            Prioridade —baixa→ alta
+                                        </option>
+                                        <option value="product_asc">
+                                            Produto — A → Z
+                                        </option>
+                                        <option value="product_desc">
+                                            Produto — Z → A
+                                        </option>
+                                        <option value="requester_asc">
+                                            Solicitante — A → Z
+                                        </option>
+                                        <option value="requester_desc">
+                                            Solicitante — Z → A
+                                        </option>
+                                        <option value="date_desc">
+                                            Data — recentes
+                                        </option>
+                                        <option value="date_asc">
+                                            Data — antigos
+                                        </option>
+                                    </select>
 
-                                        setQueryParams((previous) => ({
-                                            ...previous,
-                                            order: event.target.value,
-                                        }));
-                                    }}
-                                >
-                                    <option value="default">
-                                        Ordenar por
-                                    </option>
+                                    <FaChevronDown className="sort-select-icon" />
 
-                                    <option value="priority_asc">
-                                        Prioridade —alta→ baixa
-                                    </option>
-
-                                    <option value="priority_desc">
-                                        Prioridade —baixa→ alta
-                                    </option>
-
-                                    <option value="product_asc">
-                                        Produto — A → Z
-                                    </option>
-
-                                    <option value="product_desc">
-                                        Produto — Z → A
-                                    </option>
-
-                                    <option value="requester_asc">
-                                        Solicitante — A → Z
-                                    </option>
-
-                                    <option value="requester_desc">
-                                        Solicitante — Z → A
-                                    </option>
-
-                                    <option value="date_desc">
-                                        Data — mais recentes
-                                    </option>
-
-                                    <option value="date_asc">
-                                        Data — mais antigos
-                                    </option>
-                                </select>
+                                </div>
                             </div>
                         </div>
 
@@ -424,7 +494,7 @@ function PendingItems() {
                             <ItemsTable
                                 items={itemsData.items}
                                 page={itemsData.page}
-                                limit={itemsData.limit} 
+                                limit={itemsData.limit}
                                 selectedItemId={selectedItemId}
                                 onSelectItem={setSelectedItemId}
                                 activeFiltersCount={activeFiltersCount}
@@ -433,6 +503,9 @@ function PendingItems() {
                                 onTrash={handleTrashItem}
                                 pendingScrollItemId={pendingScrollItemId}
                                 onPendingScrollComplete={() => setPendingScrollItemId(null)}
+                                completingItemId={completingItemId}
+                                exitingItemId={exitingItemId}
+                                trashingItemId={trashingItemId}
                             />
 
                             <div className="pagination-container">

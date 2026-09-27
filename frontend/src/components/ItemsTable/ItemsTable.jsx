@@ -13,6 +13,10 @@ function ItemsTable({
     onTrash,
     pendingScrollItemId,
     onPendingScrollComplete,
+    completingItemId,
+    exitingItemId,
+    trashingItemId,
+
 }) {
     const itemsBodyRef = useRef(null);
 
@@ -119,6 +123,9 @@ function ItemsTable({
                             onComplete={onComplete}
                             onEdit={onEdit}
                             onTrash={onTrash}
+                            isCompleting={completingItemId === item.id}
+                            isExiting={exitingItemId === item.id}
+                            isTrashing={trashingItemId === item.id}
                         />
 
                     ))

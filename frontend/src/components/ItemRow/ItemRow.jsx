@@ -12,6 +12,9 @@ function ItemRow({
     onComplete,
     onEdit,
     onTrash,
+    isCompleting,
+    isExiting,
+    isTrashing,
 }) {
     return (
         <div
@@ -20,6 +23,9 @@ function ItemRow({
                 "item-row",
                 selected ? "selected" : "",
                 highlighted ? "item-row--highlighted" : "",
+                isCompleting ? "item-row--completing" : "",
+                isTrashing ? "item-row--trashing" : "",
+                isExiting ? "item-row--exiting" : "",
             ]
                 .filter(Boolean)
                 .join(" ")}
@@ -40,10 +46,10 @@ function ItemRow({
                             ?.toLowerCase()
                             .normalize("NFD")
                             .replace(/[\u0300-\u036f]/g, "")
-                            .replace(/\s+/g, "-")
+                            .replace(/[_\s]+/g, "-")
                     }`}
                 >
-                    {item.status}
+                    {item.status?.replace(/_/g, " ")}
                 </span>
             </div>
 
@@ -77,7 +83,9 @@ function ItemRow({
                     className="action-button complete-button"
                     title="Marcar pedido como realizado"
                     aria-label="Marcar pedido como realizado"
+                    disabled={isCompleting || isExiting || isTrashing}
                     onClick={() => onComplete(item.id)}
+                    
                 >
                     <FaCheck />
                 </button>
@@ -86,6 +94,7 @@ function ItemRow({
                     className="action-button edit-button"
                     title="Editar item"
                     aria-label="Editar item"
+                    disabled={isCompleting || isExiting || isTrashing}
                     onClick={() => onEdit(item.id)}
                 >
                     <FiEdit2 />
@@ -95,6 +104,7 @@ function ItemRow({
                     className="action-button trash-button"
                     title="Mover item para a lixeira"
                     aria-label="Mover item para a lixeira"
+                    disabled={isCompleting || isExiting || isTrashing}
                     onClick={() => onTrash(item.id)}
                 >
                     <FiTrash2 />

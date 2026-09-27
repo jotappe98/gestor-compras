@@ -1,0 +1,164 @@
+.trash-confirm-overlay {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+    box-sizing: border-box;
+
+    background: rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(4px);
+
+    z-index: 1000;
+}
+
+.trash-confirm-modal {
+    width: min(440px, 100%);
+
+    box-sizing: border-box;
+
+    background: #232321;
+    border-radius: 10px;
+
+    padding: 28px;
+
+    color: white;
+
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+
+    animation: trashModalOpen 0.18s ease;
+}
+
+.trash-confirm-modal h2 {
+    margin: 0 0 20px;
+    font-size: 22px;
+}
+
+.trash-confirm-message {
+    margin: 0 0 12px;
+
+    color: #ffffff;
+
+    font-size: 15px;
+    line-height: 1.6;
+
+    overflow-wrap: anywhere;
+}
+
+.trash-confirm-message strong {
+    font-weight: 600;
+}
+
+.trash-confirm-description {
+    margin: 0 0 26px;
+
+    color: #b8b8b8;
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.trash-confirm-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.trash-cancel-button,
+.trash-confirm-button {
+    min-height: 42px;
+    padding: 10px 16px;
+
+    border: none;
+    border-radius: 6px;
+
+    color: white;
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background-color 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.trash-cancel-button {
+    min-width: 110px;
+
+    background: #3a3a38;
+    border: 1px solid #555555;
+}
+
+.trash-cancel-button:hover:not(:disabled) {
+    background: #484846;
+    transform: translateY(-1px);
+}
+
+.trash-confirm-button {
+    min-width: 150px;
+
+    background: #c62828;
+}
+
+.trash-confirm-button:hover:not(:disabled) {
+    background: #a91f1f;
+    transform: translateY(-1px);
+}
+
+.trash-cancel-button:disabled,
+.trash-confirm-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+@keyframes trashModalOpen {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 480px) {
+    .trash-confirm-modal {
+        padding: 22px;
+    }
+
+    .trash-confirm-actions {
+        flex-direction: column-reverse;
+    }
+
+    .trash-cancel-button,
+    .trash-confirm-button {
+        width: 100%;
+    }
+}
+
+/*icone*/
+
+.trash-confirm-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 20px;
+}
+
+.trash-confirm-title h2 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.trash-confirm-title-icon {
+    color: #ff4d4d;
+    font-size: 24px;
+    flex-shrink: 0;
+}

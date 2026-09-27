@@ -155,6 +155,24 @@ export async function completeItem(id) {
 }
 
 
+export async function trashItem(id) {
+    const response = await fetch(
+        `${API_URL}/items/${id}/trash`,
+        {
+            method: "PATCH",
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error(
+            "Erro ao mover o item para a lixeira."
+        );
+    }
+
+    return response.json();
+}
+
+
 export async function updateItem(id, itemData) {
 
     const response = await fetch(

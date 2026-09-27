@@ -10,6 +10,7 @@ function ItemsTable({
     activeFiltersCount,
     onComplete,
     onEdit,
+    onTrash,
     pendingScrollItemId,
     onPendingScrollComplete,
 }) {
@@ -117,6 +118,7 @@ function ItemsTable({
                             onClick={() => onSelectItem(item.id)}
                             onComplete={onComplete}
                             onEdit={onEdit}
+                            onTrash={onTrash}
                         />
 
                     ))

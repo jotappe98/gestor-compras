@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { getItems, getItemById, getItemPage, completeItem } from "../../services/api";
+import { getItems, getItemById, getItemPage, completeItem, trashItem } from "../../services/api";
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import ItemsTable from "../../components/ItemsTable/ItemsTable";
@@ -9,6 +9,7 @@ import FiltersModal from "../../components/FiltersModal/FiltersModal";
 import "../../styles/PendingItems.css";
 import { FaPlusCircle } from "react-icons/fa";
 import AddItemModal from "../../components/AddItemModal/AddItemModal";
+import TrashConfirmModal from "../../components/TrashConfirmModal/TrashConfirmModal";
 
 
 
@@ -32,9 +33,11 @@ function PendingItems() {
     });
 
     const [selectedItemId, setSelectedItemId] = useState(null);
+
     const [selectedItem, setSelectedItem] = useState(null);
 
     const [mainPage, setMainPage] = useState(1);
+
     const [searchPage, setSearchPage] = useState(1);
 
     const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -47,8 +50,11 @@ function PendingItems() {
 
     const [pendingScrollItemId, setPendingScrollItemId] = useState(null);
 
-
     const preserveSelectionRef = useRef(false);
+
+    const [itemToTrash, setItemToTrash] = useState(null);
+
+    const [isTrashing, setIsTrashing] = useState(false);
 
 
 
@@ -232,6 +238,64 @@ function PendingItems() {
             }
         }
 
+    
+    
+    function handleTrashItem(itemId) {
+    const item = itemsData.items.find(
+        (item) => item.id === itemId
+    );
+
+    if (!item) {
+        return;
+    }
+
+    setItemToTrash(item);
+}
+
+    function handleCancelTrash() {
+        if (isTrashing) {
+            return;
+        }
+
+        setItemToTrash(null);
+    }
+
+    async function handleConfirmTrash() {
+        if (!itemToTrash || isTrashing) {
+            return;
+        }
+
+        const itemId = itemToTrash.id;
+
+        try {
+            setIsTrashing(true);
+
+            await trashItem(itemId);
+
+            if (selectedItemId === itemId) {
+                setSelectedItemId(null);
+                setSelectedItem(null);
+            }
+
+            setItemToTrash(null);
+
+            setItemsRefreshKey((prev) => prev + 1);
+
+        } catch (error) {
+            console.error(
+                "Erro ao mover item para a lixeira:",
+                error
+            );
+
+            window.alert(
+                "Não foi possível mover o item para a lixeira."
+            );
+
+        } finally {
+            setIsTrashing(false);
+        }
+    }
+
 
 
     return (
@@ -360,12 +424,13 @@ function PendingItems() {
                             <ItemsTable
                                 items={itemsData.items}
                                 page={itemsData.page}
-                                limit={itemsData.limit}
+                                limit={itemsData.limit} 
                                 selectedItemId={selectedItemId}
                                 onSelectItem={setSelectedItemId}
                                 activeFiltersCount={activeFiltersCount}
                                 onComplete={handleCompleteItem}
                                 onEdit={handleEditItem}
+                                onTrash={handleTrashItem}
                                 pendingScrollItemId={pendingScrollItemId}
                                 onPendingScrollComplete={() => setPendingScrollItemId(null)}
                             />
@@ -441,6 +506,14 @@ function PendingItems() {
                     itemToEdit={itemToEdit}
                 />
             )}
+
+
+            <TrashConfirmModal
+                item={itemToTrash}
+                isSubmitting={isTrashing}
+                onCancel={handleCancelTrash}
+                onConfirm={handleConfirmTrash}
+            />
 
         </div>
     );
